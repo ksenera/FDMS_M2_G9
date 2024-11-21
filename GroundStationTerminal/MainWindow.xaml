@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <TabControl Name="OperationTabs" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <!-- Real-Time Data View -->
+            <TabItem Header="Real-Time Data">
+                <Grid>
+                    <Label Content="Real-Time Telemetry" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="10"/>
+                    <DataGrid Name="TelemetryDataGrid" Margin="10,40,10,10" AutoGenerateColumns="True"/>
+                    <Button Name="ToggleRealTimeButton" Content="Disable Real-Time" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Click="ToggleRealTimeButton_Click"/>
+                    <Label Name="StatusLabel" Content="Status: Connected" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
