@@ -16,7 +16,7 @@ namespace GroundStationTerminal
             this.dataFormat = format;
         }
 
-        public ParsedData Parse(string data)
+        public ParsedData ParseData(string data)
         {
 
             // if the data is not in the correct format, throw ArgumentException
