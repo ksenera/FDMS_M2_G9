@@ -16,25 +16,80 @@ namespace GroundStationTerminal
             this.dataFormat = format;
         }
 
-        public ParsedData ParseData(string data)
+        public ParsedData Parse(string data)
         {
 
             // if the data is not in the correct format, throw ArgumentException
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new ArgumentNullException("data cannot be null or empty.");
+            }
 
             // parse based on specific format array of strings and split
+            string[] entirePacket = data.Split('*');
 
-            return new ParsedData();
+            // header has the aircraft tail ID and sequence number of the packet
+            string[] packetHeader = entirePacket[0].Split(',');
+
+            string aircraftTailID = packetHeader[0];
+
+            // body has data/time accelx,y,z weight altitude pitch bank
+            string[] packetBody = entirePacket[1].Split(',');
+
+            DateTime timestamp = DateTime.Parse(packetBody[0]);
+            double accelX = double.Parse(packetBody[1]);
+            double accelY = double.Parse(packetBody[2]);
+            double accelZ = double.Parse(packetBody[3]);
+            double weight = double.Parse(packetBody[4]);
+            double altitude = double.Parse(packetBody[5]);
+            double pitch = double.Parse(packetBody[6]);
+            double bank = double.Parse(packetBody[7]);
+
+            // packet trailer is the checksum 
+            if (!int.TryParse(entirePacket[2], out int checksum))
+            {
+                throw new ArgumentException("Invalid checksum.");
+            }
+            
             // should follow the format as per SharedLibrary.ParsedData
+            return new ParsedData
+            {
+                AircraftID = aircraftTailID,
+                Timestamp = timestamp,
+                AccelX = accelX,
+                AccelY = accelY,
+                AccelZ = accelZ,
+                Weight = weight,
+                Altitude = altitude,
+                Pitch = pitch,
+                Bank = bank,
+                Checksum = checksum
+            };
+            
         }
 
-        public bool ValidateChecksum((DateTime Timestamp, double AccelX, double AccelY, double AccelZ,
-            double Weight, double Altitude, double Pitch, double Bank) body, int providedChecksum)
+        public bool ValidateChecksum(string data)
         {
-            double checksumValue = (body.Altitude + body.Pitch + body.Bank) / 3;
+            // packet needs to be split into header, body, and trailer
+            string[] entirePacket = data.Split('*');
 
-            int calculatedChecksum = (int)Math.Round(checksumValue);
+            // checksum Calculation as per APPENDIX C requires body elements 
+            string[] packetBody = entirePacket[1].Split(",");
+            double altitude = double.Parse(packetBody[5]);
+            double pitch = double.Parse(packetBody[6]);
+            double bank = double.Parse(packetBody[7]);
 
-            return providedChecksum == calculatedChecksum;
+            // checksum calculation
+            double checksumResult = (altitude + pitch + bank) / 3;
+            checksumResult = Math.Round(checksumResult, 0);
+
+            // extract checksumResult from trailer of packet and compare
+            if (!int.TryParse(entirePacket[2], out int checksum))
+            {
+                throw new ArgumentException("Invalid checksum.");
+            }
+
+            return checksum == (int)checksumResult;
         }
     }
 }
