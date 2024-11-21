@@ -31,6 +31,10 @@ namespace GroundStationTerminal
 
 
         // private mediator method to store telemetry data in the database
+        // here will be tricky as there are two tables in the database 
+        // one for storin Gforcedata and another for storing Attitudedata 
+        // both has a composite key AircraftTailID and TimeStamp
+        // so there would be two StoreData methods in the DatabaseHandler class
         private void StoreInDatabase(ParsedData data)
         {
             databaseHandler.StoreData(data);
