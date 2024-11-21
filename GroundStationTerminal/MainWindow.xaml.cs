@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using SharedLibrary;
+using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +21,11 @@ namespace GroundStationTerminal
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)
+        {
+            throw new NotImplementedException();
         }
     }
 }
