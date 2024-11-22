@@ -94,21 +94,30 @@ namespace GroundStationTerminal
             if (isConnected && stream != null)
             {
                 byte[] buffer = new byte[1024];
-                int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                // Got socket exception when i ran instances of both systems 
-                if (bytesRead == 0)
-                {
-                    Console.WriteLine("Connection closed by remote host");
-                    Disconnect();
-                    return;
-                }
-                string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                Console.WriteLine("Received data successfully: " + dataReceived);
 
-                // parse packet in actual use case above writeline is for testing 
-                ParsePacket(dataReceived);
+                while(isConnected)
+                {
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    // Got socket exception when i ran instances of both systems 
+                    if (bytesRead > 0)
+                    {
+                        string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        Console.WriteLine("Received data successfully: " + dataReceived);
+                        // parse packet in actual use case above writeline is for testing 
+                        ParsePacket(dataReceived);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Connection closed by remote host.");
+                Disconnect();
+
             }
         }
+
+        // from Packet in SharedLibrary and SendTelemetryPacketAsync need to parse the byte array 
+
 
         public void ParsePacket(string data)
         {
