@@ -14,6 +14,14 @@ namespace GroundStationTerminal
         private GUIInterfaceManager guiInterfaceManager;
         private DatabaseHandler databaseHandler;
 
+        public TelemetryMediator(TelemetryCollector telemetryCollector, TelemetryParser telemetryParser, GUIInterfaceManager guiInterfaceManager, DatabaseHandler databaseHandler)
+        {
+            this.telemetryCollector = telemetryCollector;
+            this.telemetryParser = telemetryParser;
+            this.guiInterfaceManager = guiInterfaceManager;
+            this.databaseHandler = databaseHandler;
+        }
+
 
 
         // method to call when new telemetry data is received from the collector 
