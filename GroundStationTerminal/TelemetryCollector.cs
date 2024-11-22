@@ -95,10 +95,18 @@ namespace GroundStationTerminal
             {
                 byte[] buffer = new byte[1024];
                 int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                // Got socket exception when i ran instances of both systems 
+                if (bytesRead == 0)
+                {
+                    Console.WriteLine("Connection closed by remote host");
+                    Disconnect();
+                    return;
+                }
                 string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 Console.WriteLine("Received data successfully: " + dataReceived);
 
                 // parse packet in actual use case above writeline is for testing 
+                ParsePacket(dataReceived);
             }
         }
 
