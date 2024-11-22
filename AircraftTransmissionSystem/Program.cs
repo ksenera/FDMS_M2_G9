@@ -4,7 +4,7 @@ namespace AircraftTransmissionSystem
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             // this works :D (Parsing only)
@@ -18,7 +18,17 @@ namespace AircraftTransmissionSystem
 
             TCPCommunicator tcpCommunicator = new TCPCommunicator();
 
-            Task task = tcpCommunicator.ConnectToGroundTerminal();
+            // first await connection to ground term to be completed 
+            await tcpCommunicator.ConnectToGroundTerminal();
+
+            Console.WriteLine("Successfully connected to Ground Station Terminal");
+
+            //Task task = tcpCommunicator.ConnectToGroundTerminal(); made it async task Main
+
+            while (true)
+            {
+                // keep connection alive and after while is not true exit gracefully
+            }
             
             // add packet here somehow tos end to ground
 
