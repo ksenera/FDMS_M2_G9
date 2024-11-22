@@ -21,12 +21,30 @@ namespace GroundStationTerminal
 
         public void Connect()
         {
-            connection.Open();
+            try
+            {
+                connection.Open();
+                Console.WriteLine("Database connection established.");
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error connecting to database: " + ex.Message);
+                throw;
+            }
         }
 
         public void Disconnect()
         {
-            connection.Close();
+            try
+            {
+                connection.Close();
+                Console.WriteLine("Database connection closed.");
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error disconnecting from database: " + ex.Message);
+                throw;
+            }
         }
 
         // inserts parsed data into G Force Data table
