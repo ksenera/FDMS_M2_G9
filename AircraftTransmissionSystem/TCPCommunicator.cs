@@ -76,7 +76,7 @@ namespace AircraftTransmissionSystem
                     throw new InvalidOperationException("Invalid packet checksum");
                 }*/
 
-                byte[] packetData = packet.ToByteArray();
+                byte[] packetData = packet.CreateByteArray();
                 await fileReceive.WriteAsync(packetData, 0, packetData.Length);
                 await fileReceive.FlushAsync();
 
