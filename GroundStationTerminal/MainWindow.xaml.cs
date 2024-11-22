@@ -50,13 +50,13 @@ namespace GroundStationTerminal
         }
 
         // Toggle button for real-time data collection
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ToggleRealTimeButton_Click(object sender, RoutedEventArgs e)
         {
             throw new System.NotImplementedException();
         }
 
         // search button for searching the database
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             throw new System.NotImplementedException();
         }
