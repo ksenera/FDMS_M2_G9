@@ -50,14 +50,15 @@ namespace GroundStationTerminal
         // inserts parsed data into G Force Data table
         public void StoreGForceData(ParsedData data)
         {
-            string query = "INSERT INTO GForceData (AircraftID, Timestamp, AccelX, AccelY, AccelZ, " +
-                "Checksum) VALUES (@AircraftID, @Timestamp, @AccelX, @AccelY, @AccelZ, @Checksum)";
+            string query = "INSERT INTO GForceData (AircraftID, Timestamp, AccelX, AccelY, AccelZ, Weight, " +
+                "Checksum) VALUES (@AircraftID, @Timestamp, @AccelX, @AccelY, @AccelZ, @Weight, @Checksum)";
             SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@AircraftID", data.AircraftID);
             command.Parameters.AddWithValue("@Timestamp", data.Timestamp);
             command.Parameters.AddWithValue("@AccelX", data.AccelX);
             command.Parameters.AddWithValue("@AccelY", data.AccelY);
             command.Parameters.AddWithValue("@AccelZ", data.AccelZ);
+            command.Parameters.AddWithValue("@Weight", data.Weight);
             command.Parameters.AddWithValue("@Checksum", data.Checksum);
             command.ExecuteNonQuery();
         }
@@ -65,11 +66,12 @@ namespace GroundStationTerminal
         // parsed data stored into attitude data table
         public void StoreAttitudeData(ParsedData data)
         {
-            string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Pitch, Bank, Checksum) " +
-                "VALUES (@AircraftID, @Timestamp, @Pitch, @Bank, @Checksum)";
+            string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Altitude, Pitch, Bank, Checksum) " +
+                "VALUES (@AircraftID, @Timestamp, @Altitude, @Pitch, @Bank, @Checksum)";
             SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@AircraftID", data.AircraftID);
             command.Parameters.AddWithValue("@Timestamp", data.Timestamp);
+            command.Parameters.AddWithValue("@Altitude", data.Altitude);
             command.Parameters.AddWithValue("@Pitch", data.Pitch);
             command.Parameters.AddWithValue("@Bank", data.Bank);
             command.Parameters.AddWithValue("@Checksum", data.Checksum);
