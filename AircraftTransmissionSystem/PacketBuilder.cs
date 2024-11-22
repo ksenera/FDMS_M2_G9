@@ -15,9 +15,9 @@ namespace AircraftTransmissionSystem
             private Int32 checksum;
         }
 
-        private string Header { get; set; }
-        private string PacketBody { get; set; }
-        private int ChecksumNumber { get; set; }
+        //private string Header { get; set; }
+        //private string PacketBody { get; set; }
+        //private int ChecksumNumber { get; set; }
 
         public void AddHeader(string header)
         {
