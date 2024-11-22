@@ -116,9 +116,6 @@ namespace GroundStationTerminal
             }
         }
 
-        // from Packet in SharedLibrary and SendTelemetryPacketAsync need to parse the byte array 
-
-
         public void ParsePacket(string data)
         {
             if (string.IsNullOrEmpty(data))
