@@ -32,7 +32,8 @@ namespace GroundStationTerminal
         // inserts parsed data into G Force Data table
         public void StoreGForceData(ParsedData data)
         {
-            string query = "INSERT INTO GForceData (AircraftID, Timestamp, AccelX, AccelY, AccelZ, Checksum) VALUES (@AircraftID, @Timestamp, @AccelX, @AccelY, @AccelZ, @Checksum)";
+            string query = "INSERT INTO GForceData (AircraftID, Timestamp, AccelX, AccelY, AccelZ, " +
+                "Checksum) VALUES (@AircraftID, @Timestamp, @AccelX, @AccelY, @AccelZ, @Checksum)";
             SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@AircraftID", data.AircraftID);
             command.Parameters.AddWithValue("@Timestamp", data.Timestamp);
@@ -46,7 +47,8 @@ namespace GroundStationTerminal
         // parsed data stored into attitude data table
         public void StoreAttitudeData(ParsedData data)
         {
-            string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Pitch, Bank, Checksum) VALUES (@AircraftID, @Timestamp, @Pitch, @Bank, @Checksum)";
+            string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Pitch, Bank, Checksum) " +
+                "VALUES (@AircraftID, @Timestamp, @Pitch, @Bank, @Checksum)";
             SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@AircraftID", data.AircraftID);
             command.Parameters.AddWithValue("@Timestamp", data.Timestamp);

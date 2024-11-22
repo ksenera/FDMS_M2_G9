@@ -17,6 +17,19 @@
                     <Label Name="StatusLabel" Content="Status: Connected" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Database Search">
+                <Grid>
+                    <Label Content="Search Database" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16" Margin="10"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,40,10,0">
+                        <Label Content="Aircraft Tail ID:" Margin="5"/>
+                        <TextBox Name="TailIdTextBox" Width="100" Margin="5"/>
+                        <Label Content="Timestamp:" Margin="5"/>
+                        <TextBox Name="TimestampTextBox" Width="150" Margin="5"/>
+                        <Button Name="SearchButton" Content="Search" Margin="5" Click="SearchButton_Click"/>
+                    </StackPanel>
+                    <DataGrid Name="SearchResultsGrid" Margin="10,100,10,10" AutoGenerateColumns="True"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
