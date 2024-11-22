@@ -7,7 +7,7 @@ namespace AircraftTransmissionSystem
         static void Main(string[] args)
         {
 
-            // this works :D
+            // this works :D (Parsing only)
             //FileReader fileReader = new FileReader("");
 
             //fileReader.parsedData = fileReader.ParseData();
@@ -16,11 +16,11 @@ namespace AircraftTransmissionSystem
 
 
 
-
             TCPCommunicator tcpCommunicator = new TCPCommunicator();
 
             Task task = tcpCommunicator.ConnectToGroundTerminal();
-            Task task2 = tcpCommunicator.ReceiveFile();
+            
+            // add packet here somehow tos end to ground
 
             Console.WriteLine("finished");
         }

@@ -62,8 +62,8 @@ namespace AircraftTransmissionSystem
 
         public async Task SendTelemetryPacketAsync(Packet packet)
         {
-            if (packet == null)
-                throw new ArgumentNullException(nameof(packet));
+            //    if (packet == null)
+            //        throw new ArgumentNullException(nameof(packet));
 
             if (!isConnected)
                 throw new InvalidOperationException("Not connected to ground terminal");
@@ -90,4 +90,5 @@ namespace AircraftTransmissionSystem
 
             // wait for files to transfer
         }
+    }
 }
