@@ -8,6 +8,9 @@ namespace AircraftTransmissionSystem
 {
     internal class PacketBuilder
     {
+
+        // header: aircrafttail#, packet sequence
+
         private struct Packet
         {
             private string header;

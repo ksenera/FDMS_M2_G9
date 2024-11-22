@@ -1,4 +1,6 @@
-﻿namespace AircraftTransmissionSystem
+﻿using System.Net.Sockets;
+
+namespace AircraftTransmissionSystem
 {
     internal class Program
     {
@@ -16,6 +18,15 @@
 
         private class ClientListener
         {
+
+            private TcpListener TcpListener { get; set; }
+
+
+
+            public void StartListening()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

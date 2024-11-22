@@ -31,7 +31,7 @@ namespace AircraftTransmissionSystem
         // maybe keep private since it's only used in this class, not needed outside
         public ParsedData ParseData()
         {
-            const string data = "7_8_2018 19:35:21,-0.799099, 0.047375, 0.028341, 2154.009033, 1124.106079, 0.022695, 0.001006";
+            const string data = "7_8_2018 19:35:21,-0.799099, 0.047375, 0.028341, 2154.009033, 1124.106079, 0.022695, 0.001006"; // placeholder
 
             string[] parts = data.Split(',');
 
