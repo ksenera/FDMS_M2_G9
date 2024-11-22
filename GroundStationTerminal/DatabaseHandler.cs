@@ -15,8 +15,8 @@ namespace GroundStationTerminal
 
         public DatabaseHandler()
         {
-            connectionString = connection.ConnectionString;
-            connection = new SqlConnection(connectionString);
+            //connectionString = connection.ConnectionString;
+            //connection = new SqlConnection(connectionString);
         }
 
         public void Connect()

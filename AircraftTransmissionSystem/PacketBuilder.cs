@@ -11,13 +11,6 @@ namespace AircraftTransmissionSystem
 
         // header: aircrafttail#, packet sequence
 
-        private struct Packet
-        {
-            private string header;
-            private string packetBody;
-            private Int32 checksum;
-        }
-
         //private string Header { get; set; }
         //private string PacketBody { get; set; }
         //private int ChecksumNumber { get; set; }

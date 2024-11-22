@@ -10,9 +10,10 @@ using SharedLibrary;
 
 namespace AircraftTransmissionSystem
 {
-    internal class FileReader(string filePath)
+    //internal class FileReader(string filePath)
+    internal class FileReader()
     {
-        private string FilePath = filePath;// get a dialogue window so user can select the file with the given extensions allowed
+        private string FilePath;// get a dialogue window so user can select the file with the given extensions allowed
         public ParsedData parsedData;
 
         public string[] ReadData()
