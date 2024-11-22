@@ -2,7 +2,6 @@
 {
     internal class Program
     {
-
         static void Main(string[] args)
         {
             //Console.WriteLine("Hello, World!");
@@ -12,6 +11,11 @@
             fileReader.parsedData = fileReader.ParseData();
 
             Console.WriteLine(fileReader.parsedData.AccelY);
+        }
+
+
+        private class ClientListener
+        {
         }
     }
 }

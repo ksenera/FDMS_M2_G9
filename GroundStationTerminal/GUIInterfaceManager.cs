@@ -26,5 +26,6 @@ namespace GroundStationTerminal
             telemetryDataCollected.Add(data);
             mainWindow.UpdateTelemetryData(telemetryDataCollected);
         }
+
     }
 }
