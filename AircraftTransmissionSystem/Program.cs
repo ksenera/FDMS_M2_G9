@@ -6,27 +6,23 @@ namespace AircraftTransmissionSystem
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello, World!");
 
-            FileReader fileReader = new FileReader("");
+            // this works :D
+            //FileReader fileReader = new FileReader("");
 
-            fileReader.parsedData = fileReader.ParseData();
+            //fileReader.parsedData = fileReader.ParseData();
 
-            Console.WriteLine(fileReader.parsedData.AccelY);
-        }
-
-
-        private class ClientListener
-        {
-
-            private TcpListener TcpListener { get; set; }
+            //Console.WriteLine(fileReader.parsedData.AccelY);
 
 
 
-            public void StartListening()
-            {
-                throw new NotImplementedException();
-            }
+
+            TCPCommunicator tcpCommunicator = new TCPCommunicator();
+
+            Task task = tcpCommunicator.ConnectToGroundTerminal();
+            Task task2 = tcpCommunicator.ReceiveFile();
+
+            Console.WriteLine("finished");
         }
     }
 }

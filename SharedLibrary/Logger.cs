@@ -13,5 +13,4 @@ namespace SharedLibrary
         void LogError(string message);
         void LogDebug(string message);
     }
-
 }
