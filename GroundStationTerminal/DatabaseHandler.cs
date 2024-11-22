@@ -43,6 +43,29 @@ namespace GroundStationTerminal
             command.ExecuteNonQuery();
         }
 
+        // parsed data stored into attitude data table
+        public void StoreAttitudeData(ParsedData data)
+        {
+            string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Pitch, Bank, Checksum) VALUES (@AircraftID, @Timestamp, @Pitch, @Bank, @Checksum)";
+            SqlCommand command = new(query, connection);
+            command.Parameters.AddWithValue("@AircraftID", data.AircraftID);
+            command.Parameters.AddWithValue("@Timestamp", data.Timestamp);
+            command.Parameters.AddWithValue("@Pitch", data.Pitch);
+            command.Parameters.AddWithValue("@Bank", data.Bank);
+            command.Parameters.AddWithValue("@Checksum", data.Checksum);
+            command.ExecuteNonQuery();
+        }
+
+        // retrieves data from G Force Data table
+
+        // need to add within a specified date range for the query 
+        public SqlDataReader RetrieveGForceData()
+        {
+            string query = "SELECT * FROM GForceData";
+            SqlCommand command = new(query, connection);
+            SqlDataReader reader = command.ExecuteReader();
+            return reader;
+        }
 
 
         // temporary store data method 
