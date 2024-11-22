@@ -91,7 +91,15 @@ namespace GroundStationTerminal
 
         public void ReceiveData()
         {
-            // Receive data from the telemetry server
+            if (isConnected && stream != null)
+            {
+                byte[] buffer = new byte[1024];
+                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine("Received data successfully: " + dataReceived);
+
+                // parse packet in actual use case above writeline is for testing 
+            }
         }
 
         public void ParsePacket(string data)
