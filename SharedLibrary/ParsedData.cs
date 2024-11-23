@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * File          : .cs
+ * Project       : SENG3020 M-02
+ * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
+ * First Version : 11/21/2024
+ * Description   : 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +26,12 @@ namespace SharedLibrary
         public double Pitch { get; set; }
         public double Bank { get; set; }
         public int Checksum { get; set; }
+
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(AircraftID)) throw new ArgumentException("AircraftID cannot be null or empty.");
+            if (AccelX < -10 || AccelX > 10) throw new ArgumentOutOfRangeException("AccelX is out of range.");
+        }
 
     }
 }
