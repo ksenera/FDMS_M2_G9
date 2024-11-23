@@ -40,9 +40,11 @@ namespace AircraftTransmissionSystem
         {
             groundTerminalIP = "127.0.0.1";
             groundTerminalPort = 8080;
-            PacketBuilder packetBuilder = new PacketBuilder();
-            FileReader fileReader = new FileReader(filePath);
             isConnected = false;
+
+            this.packetBuilder = new PacketBuilder();
+            this.fileReader = new FileReader(filePath);
+
         }
 
 
@@ -87,6 +89,14 @@ namespace AircraftTransmissionSystem
             {
                 // here we call PacketBuilder to create the packet 
                 Packet packet = packetBuilder.BuildPacket(parsedData);
+
+                // for data integrity verify checksum again before sending
+                if (!packet.VerifyChecksum())
+                {
+                    Console.WriteLine("Packet checksum invalid, packet being skipped...");
+                    throw new InvalidOperationException("Invalid checksum, packet skipped");
+                    continue;
+                }
 
                 // finally send the data using Async method below 
                 await SendTelemetryPacketAsync(packet);  
