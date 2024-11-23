@@ -65,14 +65,21 @@ namespace GroundStationTerminal
 
         public void Disconnect()
         {
-            // Disconnect from the telemetry server
-            if (isConnected)
+            try 
             {
-                stream.Close();
-                client.Close();
-                listener.Stop();
-                isConnected = false;
-                Console.WriteLine("Disconnected from telemetry socket. ");
+                // Disconnect from the telemetry server
+                if (isConnected)
+                {
+                    stream.Close();
+                    client.Close();
+                    listener.Stop();
+                    isConnected = false;
+                    Console.WriteLine("Disconnected from telemetry socket. ");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during disconnection: {ex.Message}");
             }
         }
 
@@ -91,9 +98,16 @@ namespace GroundStationTerminal
         // Notify all observers with the parsed data
         public void NotifyObservers(ParsedData data)
         {
-            foreach (IObserver observer in observers)
+            foreach (var observer in observers)
             {
-                observer.Update(data);
+                try
+                {
+                    observer.Update(data);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error notifying observer: {ex.Message}");
+                }
             }
         }
 
@@ -126,21 +140,28 @@ namespace GroundStationTerminal
 
         public void ParsePacket(string data)
         {
-            if (string.IsNullOrEmpty(data))
+            try
             {
-                Console.WriteLine("No Data Transmitted. ");
-                return;
-            }
+                if (string.IsNullOrEmpty(data))
+                {
+                    Console.WriteLine("No data transmitted.");
+                    return;
+                }
 
-            if (telemetryParser.ValidateChecksum(data))
-            {
-                ParsedData parsedData = telemetryParser.ParseData(data);
-                // console writelines telling user what data was parsed 
-                NotifyObservers(parsedData);
+                if (telemetryParser.ValidateChecksum(data))
+                {
+                    ParsedData parsedData = telemetryParser.ParseData(data);
+                    Console.WriteLine($"Parsed data: Aircraft ID = {parsedData.AircraftID}, Timestamp = {parsedData.Timestamp}");
+                    NotifyObservers(parsedData);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid checksum.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Invalid checksum");
+                Console.WriteLine($"Error parsing packet: {ex.Message}");
             }
         }
     }
