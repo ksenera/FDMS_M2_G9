@@ -19,18 +19,13 @@ namespace GroundStationTerminal
 {
     public class TelemetryCollector
     {
-        private bool isConnected;
-        private ParsedData data;
-        private NetworkStream dataReceive;
-        private TelemetryParser telemetryParser;
-        private List<IObserver> observers;
+        private readonly TelemetryParser telemetryParser;
+        private readonly List<IObserver> observers;
 
         private const int BUFFER_SIZE = 1024;
 
-        public TelemetryCollector(NetworkStream stream, TelemetryParser telemetryParser)
+        public TelemetryCollector(TelemetryParser telemetryParser)
         {
-            this.isConnected = false;
-            this.dataReceive = stream;
             this.telemetryParser = telemetryParser;
             this.observers = new List<IObserver>();
         }
@@ -64,59 +59,17 @@ namespace GroundStationTerminal
             }
         }
 
-        public void ReceiveData()
+
+        // deleted the receive and parse packet because i changed the tcplistener to async listen 
+        // new method to handle data async from network stream 
+
+        public async Task ProcessClientStreamAsync(NetworkStream stream)
         {
-            if (dataReceive != null)
-            {
-                byte[] buffer = new byte[BUFFER_SIZE];
 
-                while(true)
-                {
-                    int bytesRead = dataReceive.Read(buffer, 0, buffer.Length);
-                    // Got socket exception when i ran instances of both systems 
-                    if (bytesRead > 0)
-                    {
-                        string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        Console.WriteLine("Received data successfully: " + dataReceived);
-                        // parse packet in actual use case above writeline is for testing 
-                        ParsePacket(dataReceived);
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("Connection closed by remote host.");
-
-            }
         }
 
-        public void ParsePacket(string data)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(data))
-                {
-                    Console.WriteLine("Data not transmitted");
-                    return;
-                }
 
-                if (telemetryParser.ValidateChecksum(data))
-                {
-                    ParsedData parsedData = telemetryParser.ParseData(data);
-                    Console.WriteLine($"Parsed data: Aircraft ID = {parsedData.AircraftID}, Timestamp = {parsedData.Timestamp}");
-                    NotifyObservers(parsedData);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid checksum");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error parsing packet: {ex.Message}");
-            }
-        }
+        // parse and notify async method that validates the checksum and then notifies the observers 
     }
-
 }
 

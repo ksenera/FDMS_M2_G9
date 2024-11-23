@@ -43,6 +43,7 @@ namespace GroundStationTerminal
                     Console.WriteLine("Connected to Aircraft Transmission System");
 
                     // call the handle client async 
+                    await HandleClientAsync(client);
                 }
                 catch { }
             }
@@ -55,6 +56,18 @@ namespace GroundStationTerminal
             try
             {
                 // use network stream 
+                using (NetworkStream stream = client.GetStream()) 
+                {
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    int bytesRead;
+
+                    // read the data from the client 
+                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                    {
+                        string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        Console.WriteLine($"Received: {receivedTelemetry}");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -68,5 +81,12 @@ namespace GroundStationTerminal
             }
         }
 
+
+        // finally stop listening 
+        public void StopListening()
+        {
+            listener.Stop();
+            Console.WriteLine("Stopped listening for aircraft transmissions");
+        }
     }
 }
