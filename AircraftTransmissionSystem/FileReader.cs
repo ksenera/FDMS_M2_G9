@@ -16,17 +16,26 @@ namespace AircraftTransmissionSystem
         private string FilePath;// get a dialogue window so user can select the file with the given extensions allowed
         public ParsedData parsedData;
 
-        public string[] ReadData()
+        //public string[] ReadData()
+        //{
+          //  try
+            //{
+              //  return File.ReadAllLines(FilePath);
+            //}
+            //catch (Exception error)
+            //{
+              //  Console.WriteLine($"Error '{error.Message}' from reading file {FilePath}");
+               // throw new NotImplementedException(); // idk what to put here :3
+            //}
+        //}
+
+        // modifying the read data method to become async to read one line, one sec 
+        public async Task<IEnumerable<string>> ReadDataAsync(string filePath)
         {
-            try
-            {
-                return File.ReadAllLines(FilePath);
-            }
-            catch (Exception error)
-            {
-                Console.WriteLine($"Error '{error.Message}' from reading file {FilePath}");
-                throw new NotImplementedException(); // idk what to put here :3
-            }
+            // create var 
+            // for each loop 
+            // return a line 
+            // await for 1 sec delay 
         }
 
         // maybe keep private since it's only used in this class, not needed outside
