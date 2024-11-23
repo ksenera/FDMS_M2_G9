@@ -16,20 +16,20 @@ namespace GroundStationTerminal
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            TelemetryParser telemetryParser = new TelemetryParser("default_format");
-            TelemetryCollector telemetryCollector = new TelemetryCollector("127.0.0.1", 8080, telemetryParser);
+            int port = 8080;
+
+            TCPListener listener = new TCPListener(port);
+            TelemetryParser telemetryParser = new TelemetryParser();
+            TelemetryCollector collectAndProcesser = new TelemetryCollector(telemetryParser);
 
             // start the listener here 
             Console.WriteLine("Listening for incoming aircraft transmissions...");
-            telemetryCollector.Connect();
 
-            // loop to receive the telemetry data and call the correct classes...
-            while (true)
-            {
-                telemetryCollector.ReceiveData(); // continually listen for live updates 
-            }
+            await listener.StartListeningAsync();
+
+            Console.WriteLine("Listener stopped");
         }
     }
 }

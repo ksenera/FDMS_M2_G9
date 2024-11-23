@@ -27,7 +27,7 @@ namespace GroundStationTerminal
     public partial class MainWindow : Window
     {
         // all class instances
-
+        private TCPListener listener;
         private GUIInterfaceManager guiInterfaceManager;
         private TelemetryMediator telemetryMediator;
         private DatabaseHandler databaseHandler;
@@ -41,15 +41,15 @@ namespace GroundStationTerminal
 
             databaseHandler = new DatabaseHandler(); // make sure to add the connection string here
 
-            telemetryParser = new TelemetryParser("defaultFormat"); // provide the required 'format' parameter
+            telemetryParser = new TelemetryParser(); 
 
-            telemetryCollector = new TelemetryCollector("127.0.0.1", 8080, telemetryParser);
+            telemetryCollector = new TelemetryCollector(telemetryParser);
 
             guiInterfaceManager = new GUIInterfaceManager(this);
 
             telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, guiInterfaceManager, databaseHandler);
 
-            telemetryCollector.Connect();
+            
         }
 
         internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)

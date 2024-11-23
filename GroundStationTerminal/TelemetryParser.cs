@@ -19,9 +19,9 @@ namespace GroundStationTerminal
     {
         private string dataFormat;
 
-        public TelemetryParser(string format)
+        public TelemetryParser()
         {
-            this.dataFormat = format;
+
         }
 
         public ParsedData ParseData(string data)
