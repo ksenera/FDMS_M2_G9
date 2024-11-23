@@ -19,69 +19,22 @@ namespace GroundStationTerminal
 {
     public class TelemetryCollector
     {
-        private string socketAddress;
-        private int port;
         private bool isConnected;
         private ParsedData data;
-        private TcpListener listener;
-        private TcpClient client;
-        private NetworkStream stream;
+        private NetworkStream dataReceive;
         private TelemetryParser telemetryParser;
         private List<IObserver> observers;
 
-        public TelemetryCollector(string socketAddress, int port, TelemetryParser telemetryParser)
+        private const int BUFFER_SIZE = 1024;
+
+        public TelemetryCollector(NetworkStream stream, TelemetryParser telemetryParser)
         {
-            this.socketAddress = socketAddress;
-            this.port = port;
             this.isConnected = false;
+            this.dataReceive = stream;
             this.telemetryParser = telemetryParser;
-            this.data = new ParsedData();
-            this.listener = new TcpListener(System.Net.IPAddress.Any, port);
-            this.client = new TcpClient();
-            this.stream = null;
             this.observers = new List<IObserver>();
         }
 
-        public bool Connect()
-        {
-            try
-            {
-                IPAddress ipAddress = IPAddress.Parse(socketAddress);
-                listener = new TcpListener(ipAddress, port);
-                listener.Start();
-                Console.WriteLine("Listening for telemetry connections...");
-                client = listener.AcceptTcpClient();
-                stream = client.GetStream();
-                isConnected = true;
-                Console.WriteLine("Connected to telemetry server.");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error connecting to telemetry server: " + ex.Message);
-                return false;
-            }
-        }
-
-        public void Disconnect()
-        {
-            try 
-            {
-                // Disconnect from the telemetry server
-                if (isConnected)
-                {
-                    stream.Close();
-                    client.Close();
-                    listener.Stop();
-                    isConnected = false;
-                    Console.WriteLine("Disconnected from telemetry socket. ");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error during disconnection: {ex.Message}");
-            }
-        }
 
         // Add an observer to the list of observers
         public void AddObserver(IObserver observer)
@@ -113,13 +66,13 @@ namespace GroundStationTerminal
 
         public void ReceiveData()
         {
-            if (isConnected && stream != null)
+            if (dataReceive != null)
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[BUFFER_SIZE];
 
-                while(isConnected)
+                while(true)
                 {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    int bytesRead = dataReceive.Read(buffer, 0, buffer.Length);
                     // Got socket exception when i ran instances of both systems 
                     if (bytesRead > 0)
                     {
@@ -133,7 +86,6 @@ namespace GroundStationTerminal
             else
             {
                 Console.WriteLine("Connection closed by remote host.");
-                Disconnect();
 
             }
         }
@@ -144,7 +96,7 @@ namespace GroundStationTerminal
             {
                 if (string.IsNullOrEmpty(data))
                 {
-                    Console.WriteLine("No data transmitted.");
+                    Console.WriteLine("Data not transmitted");
                     return;
                 }
 
@@ -156,7 +108,7 @@ namespace GroundStationTerminal
                 }
                 else
                 {
-                    Console.WriteLine("Invalid checksum.");
+                    Console.WriteLine("Invalid checksum");
                 }
             }
             catch (Exception ex)
