@@ -28,7 +28,15 @@ namespace GroundStationTerminal
 
         // instead of connecting and checking property isConnected 
         // use async method that waits for incoming aircraft transmission connections 
-
+        /*
+         * FUNCTION : StartListeningAsync()
+         *
+         * DESCRIPTION : This method is used to start listening for incoming aircraft transmission connections
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : none
+         */
         public async Task StartListeningAsync()
         {
             listener.Start();
@@ -49,8 +57,16 @@ namespace GroundStationTerminal
             }
         }
 
-        // this method is chained to the previous one as it is called to handle the 
-        // aircraft trans client connecting to the listener 
+
+        /*
+         * FUNCTION : HandleClientAsync()
+         *
+         * DESCRIPTION : this method is chained to the previous one as it is called to handle the aircraft trans client connecting to the listener 
+         * 
+         * PARAMETERS : TcpClient client
+         *
+         * RETURNS : none
+         */
         private async Task HandleClientAsync(TcpClient client)
         {
             try
@@ -82,7 +98,15 @@ namespace GroundStationTerminal
         }
 
 
-        // finally stop listening 
+        /*
+         * FUNCTION : HandleClientAsync()
+         *
+         * DESCRIPTION : finally stop listening 
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : none
+         */
         public void StopListening()
         {
             listener.Stop();

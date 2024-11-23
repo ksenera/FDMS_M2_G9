@@ -52,18 +52,43 @@ namespace GroundStationTerminal
             
         }
 
+        /*
+         * FUNCTION : UpdateTelemetryData()
+         *
+         * DESCRIPTION : not implemented
+         * 
+         * PARAMETERS : ObservableCollection<ParsedData> telemetryDataCollected
+         *
+         * RETURNS : none
+         */
         internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)
         {
             throw new NotImplementedException();
         }
 
-        // Toggle button for real-time data collection
+        /*
+         * FUNCTION : ToggleRealTimeButton_Click()
+         *
+         * DESCRIPTION : Toggle button for real-time data collection
+         * 
+         * PARAMETERS : object sender, RoutedEventArgs e
+         *
+         * RETURNS : void
+         */
         private void ToggleRealTimeButton_Click(object sender, RoutedEventArgs e)
         {
             throw new System.NotImplementedException();
         }
 
-        // search button for searching the database
+        /*
+         * FUNCTION : ToggleRealTimeButton_Click()
+         *
+         * DESCRIPTION : search button for searching the database
+         * 
+         * PARAMETERS : object sender, RoutedEventArgs e
+         *
+         * RETURNS : void
+         */
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             throw new System.NotImplementedException();

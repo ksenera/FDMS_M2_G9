@@ -24,6 +24,15 @@ namespace GroundStationTerminal
             dataFormat = "";
         }
 
+        /*
+         * FUNCTION : ParseData()
+         *
+         * DESCRIPTION : This method parses the raw telemetry data into a structured format class ParsedData
+         * 
+         * PARAMETERS : string data
+         *
+         * RETURNS : ParsedData object
+         */
         public ParsedData ParseData(string data)
         {
 
@@ -75,6 +84,16 @@ namespace GroundStationTerminal
             };
         }
 
+
+        /*
+         * FUNCTION : ValidateChecksum()
+         *
+         * DESCRIPTION : This method validates the checksum of the packet
+         * 
+         * PARAMETERS : string data
+         *
+         * RETURNS : ? true : false
+         */
         public bool ValidateChecksum(string data)
         {
             // packet needs to be split into header, body, and trailer

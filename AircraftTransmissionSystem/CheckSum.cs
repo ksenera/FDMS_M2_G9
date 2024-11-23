@@ -18,6 +18,16 @@ namespace AircraftTransmissionSystem
     {
         private string data { get; set; }
 
+
+        /*
+         * FUNCTION : CalculateChecksum()
+         *
+         * DESCRIPTION : not implemented
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : int
+         */
         public int CalculateChecksum()
         {
             throw new NotImplementedException();

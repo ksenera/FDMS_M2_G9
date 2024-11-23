@@ -31,21 +31,46 @@ namespace GroundStationTerminal
         }
 
 
-
-        // method to call when new telemetry data is received from the collector 
+        /*
+         * FUNCTION : ReceiveTelemetryData()
+         *
+         * DESCRIPTION : not implemented
+         * 
+         * PARAMETERS : string rawData
+         *
+         * RETURNS : void
+         */
         public void ReceiveTelemetryData(string rawData)
-        {
+        {// method to call when new telemetry data is received from the collector 
 
 
         }
 
-        // private mediator method to update the GUI 
+        /*
+         * FUNCTION : ReceiveTelemetryData()
+         *
+         * DESCRIPTION : Updates the GUI of the Ground Terminal Window
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         private void UpdateGUI(ParsedData data)
-        {
+        {// private mediator method to update the GUI 
             guiInterfaceManager.UpdateGUI(data);
         }
 
 
+
+        /*
+         * FUNCTION : StoreInDatabase()
+         *
+         * DESCRIPTION : Stores the telemetry data in the database
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         // private mediator method to store telemetry data in the database
         // here will be tricky as there are two tables in the database 
         // one for storin Gforcedata and another for storing Attitudedata 

@@ -31,19 +31,45 @@ namespace GroundStationTerminal
         }
 
 
-        // Add an observer to the list of observers
+        /*
+         * FUNCTION : AddObserver()
+         *
+         * DESCRIPTION : Add an observer to the list of observers
+         * 
+         * PARAMETERS : IObserver observer
+         *
+         * RETURNS : void
+         */
         public void AddObserver(IObserver observer)
         {
             observers.Add(observer);
         }
 
-        // Remove an observer from the list of observers
+
+        /*
+         * FUNCTION : RemoveObserver()
+         *
+         * DESCRIPTION : Remove an observer from the list of observers
+         * 
+         * PARAMETERS : IObserver observer
+         *
+         * RETURNS : void
+         */
         public void RemoveObserver(IObserver observer)
         {
             observers.Remove(observer);
         }
 
-        // Notify all observers with the parsed data
+
+        /*
+         * FUNCTION : RemoveObserver()
+         *
+         * DESCRIPTION : Notify all observers with the parsed data
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         public void NotifyObservers(ParsedData data)
         {
             foreach (var observer in observers)
@@ -60,9 +86,17 @@ namespace GroundStationTerminal
         }
 
 
+        /*
+         * FUNCTION : ProcessClientStreamAsync()
+         *
+         * DESCRIPTION : Process the client stream, read data, parse and notify observers
+         * 
+         * PARAMETERS : NetworkStream stream
+         *
+         * RETURNS : void
+         */
         // deleted the receive and parse packet because i changed the tcplistener to async listen 
         // new method to handle data async from network stream 
-
         public async Task ProcessClientStreamAsync(NetworkStream stream)
         {
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -97,7 +131,15 @@ namespace GroundStationTerminal
         }
 
 
-        // parse and notify async method that validates the checksum and then notifies the observers 
+        /*
+         * FUNCTION : ParseAndNotifyAsync()
+         *
+         * DESCRIPTION : parse and notify async method that validates the checksum and then notifies the observers 
+         * 
+         * PARAMETERS : string data
+         *
+         * RETURNS : none
+         */
         private async Task ParseAndNotifyAsync(string data)
         {
             if (string.IsNullOrEmpty(data))

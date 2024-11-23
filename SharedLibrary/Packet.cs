@@ -37,12 +37,30 @@ namespace SharedLibrary
         public double Checksum;
 
 
+        /*
+         * FUNCTION : CalculateChecksum()
+         *
+         * DESCRIPTION : Validates the Checksum of the packet
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : double : checksum
+         */
         public double CalculateChecksum()
         {
             Checksum = (Altitude + Pitch + Bank) / 3;
             return Checksum; // also return, a getter function
         }
 
+        /*
+         * FUNCTION : VerifyChecksum()
+         *
+         * DESCRIPTION : Verifies the Checksum of the packet
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : ? true: false
+         */
         public bool VerifyChecksum()
         {
             // verify the correct checksum
@@ -51,7 +69,15 @@ namespace SharedLibrary
         }
 
 
-        // actually creating bytearray
+        /*
+         * FUNCTION : CreateByteArray()
+         *
+         * DESCRIPTION : actually creating bytearray
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : byte[]
+         */
         public byte[] CreateByteArray()
         {
             using (MemoryStream ms = new MemoryStream())

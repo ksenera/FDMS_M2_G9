@@ -28,7 +28,15 @@ namespace GroundStationTerminal
             telemetryDataCollected = new ObservableCollection<ParsedData>();
         }
 
-        // Method to update the GUI with the latest telemetry data
+        /*
+         * FUNCTION : UpdateGUI()
+         *
+         * DESCRIPTION : Method to update the GUI with the latest telemetry data
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         public void UpdateGUI(ParsedData data)
         {
             telemetryDataCollected.Add(data);

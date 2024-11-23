@@ -31,7 +31,15 @@ namespace AircraftTransmissionSystem
         }
 
         // read telemetry data must read each line 
-
+        /*
+         * FUNCTION : ReadData()
+         *
+         * DESCRIPTION : This method reads the data from the file and returns a packet
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : Packet packet
+         */
         public IEnumerable<ParsedData> ReadData()
         {
             IEnumerable<string> lines = null;

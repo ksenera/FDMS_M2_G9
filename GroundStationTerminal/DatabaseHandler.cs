@@ -27,6 +27,16 @@ namespace GroundStationTerminal
             //connection = new SqlConnection(connectionString);
         }
 
+
+        /*
+         * FUNCTION : Connect()
+         *
+         * DESCRIPTION : Connects to the database
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : void
+         */
         public void Connect()
         {
             try
@@ -41,6 +51,15 @@ namespace GroundStationTerminal
             }
         }
 
+        /*
+         * FUNCTION : Disconnect()
+         *
+         * DESCRIPTION : Disconnects from the database
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : void
+         */
         public void Disconnect()
         {
             try
@@ -55,7 +74,15 @@ namespace GroundStationTerminal
             }
         }
 
-        // inserts parsed data into G Force Data table
+        /*
+         * FUNCTION : StoreGForceData()
+         *
+         * DESCRIPTION : inserts parsed data into G Force Data table
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         public void StoreGForceData(ParsedData data)
         {
             string query = "INSERT INTO GForceData (AircraftID, Timestamp, AccelX, AccelY, AccelZ, Weight, " +
@@ -71,7 +98,15 @@ namespace GroundStationTerminal
             command.ExecuteNonQuery();
         }
 
-        // parsed data stored into attitude data table
+        /*
+         * FUNCTION : StoreGForceData()
+         *
+         * DESCRIPTION : parsed data stored into attitude data table
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : void
+         */
         public void StoreAttitudeData(ParsedData data)
         {
             string query = "INSERT INTO AttitudeData (AircraftID, Timestamp, Altitude, Pitch, Bank, Checksum) " +
@@ -86,8 +121,16 @@ namespace GroundStationTerminal
             command.ExecuteNonQuery();
         }
 
-        // retrieves data from G Force Data table
 
+        /*
+         * FUNCTION : RetrieveGForceData()
+         *
+         * DESCRIPTION : retrieves data from G Force Data table
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : void
+         */
         // need to add within a specified date range for the query 
         public SqlDataReader RetrieveGForceData()
         {
@@ -97,8 +140,15 @@ namespace GroundStationTerminal
             return reader;
         }
 
-
-        // temporary store data method 
+        /*
+         * FUNCTION : StoreData()
+         *
+         * DESCRIPTION : not implemented (temporary store data method)
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : void
+         */
         internal void StoreData(ParsedData data)
         {
             throw new NotImplementedException();

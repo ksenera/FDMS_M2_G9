@@ -27,6 +27,15 @@ namespace SharedLibrary
         public double Bank { get; set; }
         public int Checksum { get; set; }
 
+        /*
+         * FUNCTION : Validate()
+         *
+         * DESCRIPTION : Validates the ParsedData object, specifically AircraftID and AccelX
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : byte[]
+         */
         public void Validate()
         {
             if (string.IsNullOrWhiteSpace(AircraftID)) throw new ArgumentException("AircraftID cannot be null or empty.");
