@@ -57,7 +57,7 @@ namespace GroundStationTerminal
          */
         private void UpdateGUI(ParsedData data)
         {// private mediator method to update the GUI 
-            guiInterfaceManager.UpdateGUI(data);
+            guiInterfaceManager.Update(data);
         }
 
 
