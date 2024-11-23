@@ -6,6 +6,7 @@
  * Description   : Start position, toggle real-time data collection and search button for searching the database
  */
 
+using Microsoft.Identity.Client.TelemetryCore.TelemetryClient;
 using SharedLibrary;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -33,6 +34,7 @@ namespace GroundStationTerminal
         private DatabaseHandler databaseHandler;
         private TelemetryCollector telemetryCollector;
         private TelemetryParser telemetryParser;
+        private ObservableCollection<ParsedData> telemetryData;
 
         public MainWindow()
         {
@@ -41,15 +43,17 @@ namespace GroundStationTerminal
 
             databaseHandler = new DatabaseHandler(); // make sure to add the connection string here
 
-            telemetryParser = new TelemetryParser(); 
+            TelemetryParser telemetryParser = new TelemetryParser();
 
-            telemetryCollector = new TelemetryCollector(telemetryParser);
+            TelemetryCollector telemetryCollector = new TelemetryCollector(telemetryParser);
 
             guiInterfaceManager = new GUIInterfaceManager(this);
 
             telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, guiInterfaceManager, databaseHandler);
 
-            
+            telemetryData = new ObservableCollection<ParsedData>();
+            TelemetryDataGrid.ItemsSource = telemetryData;
+
         }
 
         /*
@@ -63,7 +67,9 @@ namespace GroundStationTerminal
          */
         internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)
         {
-            throw new NotImplementedException();
+            telemetryData = telemetryDataCollected;
+            TelemetryDataGrid.ItemsSource = telemetryData;
+            //throw new NotImplementedException();
         }
 
         /*

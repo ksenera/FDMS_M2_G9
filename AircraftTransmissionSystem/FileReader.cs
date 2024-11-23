@@ -23,11 +23,22 @@ namespace AircraftTransmissionSystem
         private string FilePath;
         public ParsedData parsedData;
 
+        // due to Error while sending packet: Object reference not set to an instance of an object.
+        // Unhandled exception.System.Exception: Error while sending packet
+        // ---> System.NullReferenceException: Object reference not set to an instance of an object.
+        private string AircraftTailID;
+
         // creating file reader constructor 
         public FileReader(string filePath)
         {
             this.FilePath = filePath;
             this.parsedData = new ParsedData(); 
+            this.AircraftTailID = Path.GetFileNameWithoutExtension(filePath);
+        }
+
+        public string GetAircraftTailID()
+        {
+            return AircraftTailID;
         }
 
         // read telemetry data must read each line 

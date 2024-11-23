@@ -105,8 +105,10 @@ namespace AircraftTransmissionSystem
             // here using fileReader read data updated method iterate through one line per one sec
             foreach (var parsedData in fileReader.ReadData())
             {
+                // add the tailid from the filereader 
+                string aircraftTailID = fileReader.GetAircraftTailID();
                 // here we call PacketBuilder to create the packet 
-                Packet packet = packetBuilder.BuildPacket(parsedData);
+                Packet packet = packetBuilder.BuildPacket(parsedData, aircraftTailID);
 
                 // for data integrity verify checksum again before sending
                 if (!packet.VerifyChecksum())

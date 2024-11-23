@@ -20,9 +20,10 @@ namespace GroundStationTerminal
         {
             int port = 8080;
 
-            TCPListener listener = new TCPListener(port);
+
             TelemetryParser telemetryParser = new TelemetryParser();
-            TelemetryCollector collectAndProcesser = new TelemetryCollector(telemetryParser);
+            TelemetryCollector telemetryCollector = new TelemetryCollector(telemetryParser);            
+            TCPListener listener = new TCPListener(port, telemetryCollector);
 
             // start the listener here 
             Console.WriteLine("Listening for incoming aircraft transmissions...");

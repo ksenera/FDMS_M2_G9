@@ -113,6 +113,7 @@ namespace GroundStationTerminal
                         string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                         Console.WriteLine($"Received: {receivedTelemetry}");
                         // parse the packet 
+                        // add an if condition to see if real-time mode has been enabled in main window 
                         await ParseAndNotifyAsync(receivedTelemetry);
                     }
                     else

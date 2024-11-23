@@ -15,15 +15,17 @@ namespace GroundStationTerminal
         private TcpClient client;
         private int port;
         private bool isConnected;
+        private TelemetryCollector telemetryCollector;
 
         private const int BUFFER_SIZE = 1024;
 
         // constructor for port and initialize new tcp listening to any ip add 
-        public TCPListener(int port)
+        public TCPListener(int port, TelemetryCollector telemetryCollector)
         {
             this.port = port;
             listener = new TcpListener(IPAddress.Any, port);
             this.isConnected = false;
+            this.telemetryCollector = telemetryCollector;
         }
 
         // instead of connecting and checking property isConnected 
@@ -50,10 +52,23 @@ namespace GroundStationTerminal
                     isConnected = true;
                     Console.WriteLine("Connected to Aircraft Transmission System");
 
-                    // call the handle client async 
-                    await HandleClientAsync(client);
+                    using (NetworkStream stream = client.GetStream())
+                    {
+                        await telemetryCollector.ProcessClientStreamAsync(stream);
+                    }
+
+
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                finally
+                {
+                    isConnected = false;
+                    client.Close();
+                    Console.WriteLine("Aircraft transmission no longer connected");
+                }
             }
         }
 
@@ -74,15 +89,17 @@ namespace GroundStationTerminal
                 // use network stream 
                 using (NetworkStream stream = client.GetStream()) 
                 {
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    int bytesRead;
+                    // ground system terminal is not parsing each packet received 
+                    //await telemetryCollector.ProcessClientStreamAsync(stream);
+                    //byte[] buffer = new byte[BUFFER_SIZE];
+                    //int bytesRead;
 
-                    // read the data from the client 
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    {
-                        string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        Console.WriteLine($"Received: {receivedTelemetry}");
-                    }
+                    //// read the data from the client 
+                    //while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                    //{
+                    //    string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    //    Console.WriteLine($"Received: {receivedTelemetry}");
+                    //}
                 }
             }
             catch (Exception ex)

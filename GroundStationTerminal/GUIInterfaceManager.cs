@@ -16,7 +16,7 @@ using SharedLibrary;
 
 namespace GroundStationTerminal
 {
-    public class GUIInterfaceManager
+    public class GUIInterfaceManager : IObserver
     {
         private ObservableCollection<ParsedData> telemetryDataCollected;
 
@@ -37,11 +37,23 @@ namespace GroundStationTerminal
          *
          * RETURNS : void
          */
-        public void UpdateGUI(ParsedData data)
+        public void Update(ParsedData data)
         {
             telemetryDataCollected.Add(data);
-            mainWindow.UpdateTelemetryData(telemetryDataCollected);
+            mainWindow.Dispatcher.Invoke(() =>
+            {
+                mainWindow.UpdateTelemetryData(telemetryDataCollected);
+            });
         }
+
+        // update the GUI with the latest telemetry data
+        //public void UpdateGUI(ParsedData data)
+        //{
+        //    mainWindow.Dispatcher.Invoke(() =>
+        //    {
+        //        mainWindow.UpdateTelemetryData(telemetryDataCollected);
+        //    });
+        //}
 
     }
 }

@@ -32,11 +32,12 @@ namespace AircraftTransmissionSystem
          *
          * RETURNS : Packet packet
          */
-        public Packet BuildPacket(ParsedData data)
-        {// method to actually build the packet 
-            Packet packet = new()
+        public Packet BuildPacket(ParsedData data, string aircraftTailID)
+        {
+            Packet packet = new Packet
             {
-                AircraftTailId = data.AircraftID,
+                // due to null reference exception in packet line 59 default assigned 
+                AircraftTailId = aircraftTailID,
                 Timestamp = data.Timestamp,
                 AccelX  = data.AccelX,
                 AccelY = data.AccelY,
