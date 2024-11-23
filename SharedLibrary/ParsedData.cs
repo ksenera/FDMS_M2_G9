@@ -19,5 +19,11 @@ namespace SharedLibrary
         public double Bank { get; set; }
         public int Checksum { get; set; }
 
+        public void Validate()
+        {
+            if (string.IsNullOrWhiteSpace(AircraftID)) throw new ArgumentException("AircraftID cannot be null or empty.");
+            if (AccelX < -10 || AccelX > 10) throw new ArgumentOutOfRangeException("AccelX is out of range.");
+        }
+
     }
 }
