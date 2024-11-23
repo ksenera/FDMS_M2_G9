@@ -65,11 +65,59 @@ namespace GroundStationTerminal
 
         public async Task ProcessClientStreamAsync(NetworkStream stream)
         {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            while(true)
+            {
 
+                try
+                {                
+                    // read from the network stream 
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead > 0)
+                    {
+                        // conversion of received bytes to string 
+                        string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        Console.WriteLine($"Received: {receivedTelemetry}");
+                        // parse the packet 
+                        await ParseAndNotifyAsync(receivedTelemetry);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Connection closed unexpectedly");
+                        break;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Data wasn't received: {ex.Message}");
+                    break;
+                }
+            }
         }
 
 
         // parse and notify async method that validates the checksum and then notifies the observers 
+        private async Task ParseAndNotifyAsync(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                Console.WriteLine("Aircraft Transmission System did not transmit data");
+                return;
+            }
+
+            // here validate the checksum and then if the sum is not valid drop the packet REQ-FN-020
+            if (telemetryParser.ValidateChecksum(data))
+            {
+                ParsedData parsedData = telemetryParser.ParseData(data);
+                Console.WriteLine($"Aircraft ID = {parsedData.AircraftID}, Timestamp = {parsedData.Timestamp}");
+                NotifyObservers(parsedData);
+            }
+            else
+            {
+                Console.WriteLine("Invalid checksum, packet dropped");
+            }
+        }
     }
 }
 
