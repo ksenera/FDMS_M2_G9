@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ * File          : FileReader.cs
+ * Project       : SENG3020 M-02
+ * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
+ * First Version : 11/21/2024
+ * Description   : Logic for reading data from a file and parsing it into a ParsedData object
+ */
+
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
