@@ -7,39 +7,61 @@ using System.Threading.Tasks;
 
 namespace AircraftTransmissionSystem
 {
-    internal class PacketBuilder
+    public class PacketBuilder
     {
 
         // header: aircrafttail#, packet sequence
 
-        //private string Header { get; set; }
-        //private string PacketBody { get; set; }
-        //private int ChecksumNumber { get; set; }
+        private string Header { get; set; }
+        private string PacketBody { get; set; }
+        
+        private double ChecksumNumber { get; set; }
 
-        public void AddHeader(string header)
+        // method to actually build the packet 
+        public Packet BuildPacket(ParsedData data)
         {
-            throw new NotImplementedException();
+            Packet packet = new Packet
+            {
+                AircraftTailId = data.AircraftID,
+                Timestamp = data.Timestamp,
+                AccelX  = data.AccelX,
+                AccelY = data.AccelY,
+                AccelZ = data.AccelZ,
+                Weight = data.Weight,
+                Altitude = data.Altitude,   
+                Pitch = data.Pitch,
+                Bank = data.Bank,
+
+            };
+
+            packet.Checksum = packet.CalculateChecksum();
+            return packet;
         }
 
-        public void AddBody(string data)
-        {
-            throw new NotImplementedException();
-        }
+        //public void AddHeader(string header)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void AddChecksum()
-        {
-            throw new NotImplementedException();
-        }
+        //public void AddBody(string data)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public string GetPacket()
-        {
-            throw new NotImplementedException();
-        }
+        //public void AddChecksum()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        private bool VerifyChecksum(Packet packet)
-        {
-            throw new NotImplementedException();
-        }
+        //public string GetPacket()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private bool VerifyChecksum(Packet packet)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //private class Packet
         //{

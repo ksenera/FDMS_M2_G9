@@ -27,11 +27,13 @@ namespace AircraftTransmissionSystem
         private FileReader fileReader;
         //private readonly ILogger logger;
 
-        public TCPCommunicator()
+        // adding file reader file path as parameter
+        public TCPCommunicator(string filePath)
         {
             groundTerminalIP = "127.0.0.1";
             groundTerminalPort = 8080;
             PacketBuilder packetBuilder = new PacketBuilder();
+            FileReader fileReader = new FileReader(filePath);
             isConnected = false;
         }
 
@@ -60,6 +62,9 @@ namespace AircraftTransmissionSystem
             }
         }
 
+
+        // REQ: telemetry data is supposed to be read by the FileReader then passed to the PacketBuilder to 
+        // form the packet it is missing there's no call to PacketBuilder 
         public async Task SendTelemetryPacketAsync(Packet packet)
         {
             //    if (packet == null)
