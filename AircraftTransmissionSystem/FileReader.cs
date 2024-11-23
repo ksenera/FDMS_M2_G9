@@ -27,7 +27,7 @@ namespace AircraftTransmissionSystem
         public FileReader(string filePath)
         {
             this.FilePath = filePath;
-            this.parsedData = new ParsedData(); // Initialize parsedData to avoid CS8618
+            this.parsedData = new ParsedData(); 
         }
 
         // read telemetry data must read each line 

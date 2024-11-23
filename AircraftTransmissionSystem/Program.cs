@@ -23,9 +23,11 @@ namespace AircraftTransmissionSystem
 
             //Console.WriteLine(fileReader.parsedData.AccelY);
 
+            // temporarily using a harded coded file path for testing 
+            // will update config file to make sure we can select the file being sent after
+            string telemetryDataFilePath = "C:\\Users\\shivm\\Desktop\\C-FGAX.txt";
 
-
-            TCPCommunicator tcpCommunicator = new TCPCommunicator();
+            TCPCommunicator tcpCommunicator = new TCPCommunicator(telemetryDataFilePath);
 
             // first await connection to ground term to be completed 
             await tcpCommunicator.ConnectToGroundTerminal();
@@ -33,10 +35,13 @@ namespace AircraftTransmissionSystem
             Console.WriteLine("Successfully connected to Ground Station Terminal");
 
             //Task task = tcpCommunicator.ConnectToGroundTerminal(); made it async task Main
+
+            // sending all data here 
+            await tcpCommunicator.SendAllTelemetryPackets();
             
             // add packet here somehow tos end to ground
 
-            Console.WriteLine("finished");
+            Console.WriteLine("All packets transmitted");
         }
     }
 }

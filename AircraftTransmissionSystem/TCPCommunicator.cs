@@ -75,7 +75,7 @@ namespace AircraftTransmissionSystem
         // REQ: telemetry data is supposed to be read by the FileReader then passed to the PacketBuilder to 
         // form the packet it is missing there's no call to PacketBuilder 
 
-        // new send method reads data builds packet and send its Async should be called in main on program.cs
+        // new send method reads data builds packet and send and it should be called in main on program.cs
 
         public async Task SendAllTelemetryPackets()
         {
@@ -90,6 +90,9 @@ namespace AircraftTransmissionSystem
 
                 // finally send the data using Async method below 
                 await SendTelemetryPacketAsync(packet);  
+
+                // 1 line read per one second 
+                await Task.Delay(1000);
             }
         }
 
