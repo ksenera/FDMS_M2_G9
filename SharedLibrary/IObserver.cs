@@ -1,9 +1,9 @@
 ﻿/*
- * File          : .cs
+ * File          : IObserver.cs
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : 
+ * Description   : Interface for the observer pattern
  */
 
 using System;

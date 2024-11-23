@@ -1,9 +1,9 @@
 ﻿/*
- * File          : .cs
+ * File          : ParsedData.cs
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : 
+ * Description   : Used for the entire project, this class is used to store the parsed data from the aircraft as an object and quick way to access flight data
  */
 
 using System;

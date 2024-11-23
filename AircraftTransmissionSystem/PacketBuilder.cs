@@ -1,9 +1,9 @@
 ﻿/*
- * File          : .cs
+ * File          : PacketBuilder.cs
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : 
+ * Description   : Builds the packet and does a checksum calculation before sending to GroundTerminal
  */
 
 using SharedLibrary;
@@ -15,20 +15,26 @@ using System.Threading.Tasks;
 
 namespace AircraftTransmissionSystem
 {
+
     public class PacketBuilder
     {
+        //private string Header { get; set; }
+        //private string PacketBody { get; set; }
 
-        // header: aircrafttail#, packet sequence
+        //private double ChecksumNumber { get; set; }
 
-        private string Header { get; set; }
-        private string PacketBody { get; set; }
-        
-        private double ChecksumNumber { get; set; }
-
-        // method to actually build the packet 
+        /*
+         * FUNCTION : BuildPacket()
+         *
+         * DESCRIPTION : This method builds the packet by taking the ParsedData object and inserting the data into the packet
+         * 
+         * PARAMETERS : ParsedData data
+         *
+         * RETURNS : Packet packet
+         */
         public Packet BuildPacket(ParsedData data)
-        {
-            Packet packet = new Packet
+        {// method to actually build the packet 
+            Packet packet = new()
             {
                 AircraftTailId = data.AircraftID,
                 Timestamp = data.Timestamp,
@@ -39,7 +45,6 @@ namespace AircraftTransmissionSystem
                 Altitude = data.Altitude,   
                 Pitch = data.Pitch,
                 Bank = data.Bank,
-
             };
 
             packet.Checksum = packet.CalculateChecksum();

@@ -3,7 +3,7 @@
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : This file contains the code for LoggingService and how it listens, reads input, and logs events.
+ * Description   : This file contains the code for Connecting to the Ground Terminal. Once connceted is sends 
  */
 
 using SharedLibrary;
@@ -35,6 +35,7 @@ namespace AircraftTransmissionSystem
         private FileReader fileReader;
         //private readonly ILogger logger;
 
+
         // adding file reader file path as parameter
         public TCPCommunicator(string filePath)
         {
@@ -48,7 +49,15 @@ namespace AircraftTransmissionSystem
         }
 
 
-
+        /*
+         * FUNCTION : ConnectToGroundTerminal()
+         *
+         * DESCRIPTION : This method connects to the ground terminal using the IP and port number
+         *
+         * PARAMETERS : none
+         *
+         * RETURNS : none
+         */
         public async Task ConnectToGroundTerminal()
         {
             try
@@ -79,6 +88,15 @@ namespace AircraftTransmissionSystem
 
         // new send method reads data builds packet and send and it should be called in main on program.cs
 
+        /*
+         * FUNCTION : SendAllTelemetryPackets()
+         *
+         * DESCRIPTION : This method sends telemtry data to the ground terminal after connection is made
+         * 
+         * PARAMETERS : none
+         *
+         * RETURNS : none
+         */
         public async Task SendAllTelemetryPackets()
         {
             if (!isConnected)
@@ -95,7 +113,7 @@ namespace AircraftTransmissionSystem
                 {
                     Console.WriteLine("Packet checksum invalid, packet being skipped...");
                     throw new InvalidOperationException("Invalid checksum, packet skipped");
-                    continue;
+                    //continue;
                 }
 
                 // finally send the data using Async method below 
@@ -106,6 +124,15 @@ namespace AircraftTransmissionSystem
             }
         }
 
+        /*
+         * FUNCTION : SendTelemetryPacketAsync()
+         *
+         * DESCRIPTION : This method sends telemtry data to the ground terminal
+         * 
+         * PARAMETERS : Packet packet
+         *
+         * RETURNS : none
+         */
         public async Task SendTelemetryPacketAsync(Packet packet)
         {
             //    if (packet == null)

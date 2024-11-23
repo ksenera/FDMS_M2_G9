@@ -1,9 +1,10 @@
 ﻿/*
- * File          : .cs
+ * File          : Packet.cs
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : 
+ * Description   : A SharedLibrary file that containts the Packet struct which is used to store the data packets that are sent between the aircraft and the ground station.
+ *                  also helps with the DRY principle
  */
 
 using System;

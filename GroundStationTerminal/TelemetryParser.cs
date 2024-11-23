@@ -1,9 +1,9 @@
 ﻿/*
- * File          : .cs
+ * File          : TelemetryParser.cs
  * Project       : SENG3020 M-02
  * Programmer(s) : Kushika Senera #8837130, Andrew Babos #8822549 & Rhys McCash #8825169
  * First Version : 11/21/2024
- * Description   : 
+ * Description   : Parses out raw telemetry data into a structured format class ParsedData
  */
 
 using SharedLibrary;
@@ -21,7 +21,7 @@ namespace GroundStationTerminal
 
         public TelemetryParser()
         {
-
+            dataFormat = "";
         }
 
         public ParsedData ParseData(string data)
@@ -73,7 +73,6 @@ namespace GroundStationTerminal
                 Bank = bank,
                 Checksum = checksum
             };
-            
         }
 
         public bool ValidateChecksum(string data)
