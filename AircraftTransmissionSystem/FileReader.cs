@@ -64,35 +64,59 @@ namespace AircraftTransmissionSystem
 
             string[] parts = line.Split(',');
 
+            // due to format exception triggering caused by trailing commas 
+            // storing valid parts of telemetry line in list
+            List<string> validPartsOfTelemetryLine = new List<string>();
+
+            foreach (string part in parts)
+            {
+                if (!string.IsNullOrWhiteSpace(part))
+                {
+                    validPartsOfTelemetryLine.Add(part);
+                }
+            }
+
+            // taking list and converting to an array to validate length 
+            parts = validPartsOfTelemetryLine.ToArray();
+
             // make sure there is a check for the parts in a telemetry line 
             if (parts.Length != 8)
             {
                 throw new FormatException("Data format is invalid");
             }
 
-            // rearranged according to appendix d
             string timestamp = parts[0].Trim();
-            double x = Convert.ToDouble(parts[1].Trim());
-            double y = Convert.ToDouble(parts[2].Trim());
-            double z = Convert.ToDouble(parts[3].Trim());
-            double speed = Convert.ToDouble(parts[5].Trim());
-            double altitude = Convert.ToDouble(parts[4].Trim());
-            double pitch = Convert.ToDouble(parts[7].Trim());
-            double roll = Convert.ToDouble(parts[6].Trim());
+            DateTime parsedTimestamp;
+#pragma warning disable S6580 // Use a format provider when parsing date and time
+            bool isTimestampValid = DateTime.TryParseExact(
+                timestamp,
+                "d_M_yyyy H:mm:ss",
+                null,
+                System.Globalization.DateTimeStyles.None,
+                out parsedTimestamp
+            );
+#pragma warning restore S6580 // Use a format provider when parsing date and time
 
+            // check if time stamp valid 
+            if (!isTimestampValid)
+            {
+                Console.WriteLine($"Timestamp format invalid: {timestamp}");
+                throw new FormatException("Invalid timestamp format");
+            }
 
+            // rearranged according to appendix d
             return new ParsedData
             {
-                Timestamp = DateTime.Parse(timestamp),
-                AccelX = x,
-                AccelY = y,
-                AccelZ = z,
-                Weight = speed,
-                Altitude = altitude,
-                Pitch = pitch,
-                Bank = roll,
-
+                Timestamp = parsedTimestamp,
+                AccelX = Convert.ToDouble(parts[1].Trim()),
+                AccelY = Convert.ToDouble(parts[2].Trim()),
+                AccelZ = Convert.ToDouble(parts[3].Trim()),
+                Weight = Convert.ToDouble(parts[5].Trim()),
+                Altitude = Convert.ToDouble(parts[4].Trim()),
+                Pitch = Convert.ToDouble(parts[7].Trim()),
+                Bank = Convert.ToDouble(parts[6].Trim()),
             };
+
         }
 
         private interface DataAdapter
