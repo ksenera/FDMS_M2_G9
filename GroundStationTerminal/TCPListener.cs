@@ -13,48 +13,58 @@ namespace GroundStationTerminal
         // pasting from TelemetryCollector.cs 
         private TcpListener listener;
         private TcpClient client;
-        private NetworkStream stream;
-
-        private string socketAddress;
         private int port;
+        private bool isConnected;
 
-        public bool Connect()
+        private const int BUFFER_SIZE = 1024;
+
+        // constructor for port and initialize new tcp listening to any ip add 
+        public TCPListener(int port)
         {
-            try
+            this.port = port;
+            listener = new TcpListener(IPAddress.Any, port);
+            this.isConnected = false;
+        }
+
+        // instead of connecting and checking property isConnected 
+        // use async method that waits for incoming aircraft transmission connections 
+
+        public async Task StartListeningAsync()
+        {
+            listener.Start();
+            Console.WriteLine("Listening for aircraft transmission connections ...");
+            while (true)
             {
-                IPAddress ipAddress = IPAddress.Parse(socketAddress);
-                listener = new TcpListener(ipAddress, port);
-                listener.Start();
-                Console.WriteLine("Listening for telemetry connections...");
-                client = listener.AcceptTcpClient();
-                stream = client.GetStream();
-                Console.WriteLine("Connected to telemetry server.");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error connecting to telemetry server: " + ex.Message);
-                return false;
+                try
+                {
+                    client = new TcpClient();
+                    await listener.AcceptTcpClientAsync();
+                    isConnected = true;
+                    Console.WriteLine("Connected to Aircraft Transmission System");
+
+                    // call the handle client async 
+                }
+                catch { }
             }
         }
 
-        public void Disconnect()
+        // this method is chained to the previous one as it is called to handle the 
+        // aircraft trans client connecting to the listener 
+        private async Task HandleClientAsync(TcpClient client)
         {
             try
             {
-                // Disconnect from the telemetry server
-                if (isConnected)
-                {
-                    stream.Close();
-                    client.Close();
-                    listener.Stop();
-                    isConnected = false;
-                    Console.WriteLine("Disconnected from telemetry socket. ");
-                }
+                // use network stream 
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error during disconnection: {ex.Message}");
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                isConnected = false;
+                client.Close();
+                Console.WriteLine("Aircraft transmission no longer connected");
             }
         }
 
