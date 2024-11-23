@@ -74,6 +74,25 @@ namespace AircraftTransmissionSystem
 
         // REQ: telemetry data is supposed to be read by the FileReader then passed to the PacketBuilder to 
         // form the packet it is missing there's no call to PacketBuilder 
+
+        // new send method reads data builds packet and send its Async should be called in main on program.cs
+
+        public async Task SendAllTelemetryPackets()
+        {
+            if (!isConnected)
+                throw new InvalidOperationException("Not connected to ground terminal");
+
+            // here using fileReader read data updated method iterate through one line per one sec
+            foreach (var parsedData in fileReader.ReadData())
+            {
+                // here we call PacketBuilder to create the packet 
+                Packet packet = packetBuilder.BuildPacket(parsedData);
+
+                // finally send the data using Async method below 
+                await SendTelemetryPacketAsync(packet);  
+            }
+        }
+
         public async Task SendTelemetryPacketAsync(Packet packet)
         {
             //    if (packet == null)
