@@ -13,7 +13,7 @@ namespace FlightDataManagementSystem.Tests
     public class PacketBuilderTests
     {
         [TestMethod]
-        public void PacketBuilder_ProducesValidPacket()
+        public void PacketBuilder_Valid_ProducesValidPacket()
         {
             var parsedData = new ParsedData
             {
