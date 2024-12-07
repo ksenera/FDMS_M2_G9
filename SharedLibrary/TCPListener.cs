@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GroundStationTerminal
+namespace SharedLibrary
 {
     public class TCPListener
     {
@@ -51,11 +51,9 @@ namespace GroundStationTerminal
                     isConnected = true;
                     Console.WriteLine("Connected to Aircraft Transmission System");
 
-                    using (NetworkStream stream = client.GetStream())
-                    {
-                        await telemetryCollector.ProcessClientStreamAsync(stream);
-                    }
 
+                    NetworkStream stream = client.GetStream();
+                    await telemetryCollector.ProcessClientStreamAsync(stream);
 
                 }
                 catch (Exception ex)
@@ -65,12 +63,11 @@ namespace GroundStationTerminal
                 finally
                 {
                     isConnected = false;
-                    client.Close();
+                    client?.Close();
                     Console.WriteLine("Aircraft transmission no longer connected");
                 }
             }
         }
-
 
         /*
          * FUNCTION : HandleClientAsync()

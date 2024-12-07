@@ -102,26 +102,25 @@ namespace AircraftTransmissionSystem
             if (!isConnected)
                 throw new InvalidOperationException("Not connected to ground terminal");
 
-            // here using fileReader read data updated method iterate through one line per one sec
             foreach (var parsedData in fileReader.ReadData())
             {
-                // add the tailid from the filereader 
-                string aircraftTailID = fileReader.GetAircraftTailID();
-                // here we call PacketBuilder to create the packet 
-                Packet packet = packetBuilder.BuildPacket(parsedData, aircraftTailID);
+                // Get the AircraftTailId from the FileReader
+                string aircraftTailId = fileReader.GetAircraftTailID();
 
-                // for data integrity verify checksum again before sending
+                // Create the packet with the tail ID
+                Packet packet = packetBuilder.BuildPacket(parsedData, aircraftTailId);
+
+                // Verify checksum before sending
                 if (!packet.VerifyChecksum())
                 {
                     Console.WriteLine("Packet checksum invalid, packet being skipped...");
-                    throw new InvalidOperationException("Invalid checksum, packet skipped");
-                    continue;
+                    continue; // Skip this packet if checksum is invalid
                 }
 
-                // finally send the data using Async method below 
-                await SendTelemetryPacketAsync(packet);  
+                // Send packet
+                await SendTelemetryPacketAsync(packet);
 
-                // 1 line read per one second 
+                // Delay for 1 second to simulate reading one line at a time
                 await Task.Delay(1000);
             }
         }

@@ -18,7 +18,7 @@ using SharedLibrary;
 
 namespace AircraftTransmissionSystem
 {
-    internal class FileReader
+    public class FileReader
     {
         private string FilePath;
         public ParsedData parsedData;
@@ -32,7 +32,7 @@ namespace AircraftTransmissionSystem
         public FileReader(string filePath)
         {
             this.FilePath = filePath;
-            this.parsedData = new ParsedData(); 
+            //this.parsedData = new ParsedData(); 
             this.AircraftTailID = Path.GetFileNameWithoutExtension(filePath);
         }
 
@@ -106,24 +106,32 @@ namespace AircraftTransmissionSystem
 
             string timestamp = parts[0].Trim();
             DateTime parsedTimestamp;
-#pragma warning disable S6580 // Use a format provider when parsing date and time
+
+            // Define an array of possible formats to account for the timestamp variations
+            string[] possibleFormats =
+            {
+                "d_M_yyyy H:mm:ss",    
+                "d_M_yyyy H:m:s",      
+                "d_M_yyyy HH:mm:ss",    
+                "dd_MM_yyyy H:mm:ss",  
+                "dd_MM_yyyy H:m:s"      
+            };
+
             bool isTimestampValid = DateTime.TryParseExact(
                 timestamp,
-                "d_M_yyyy H:mm:ss",
+                possibleFormats,
                 null,
                 System.Globalization.DateTimeStyles.None,
                 out parsedTimestamp
             );
-#pragma warning restore S6580 // Use a format provider when parsing date and time
 
-            // check if time stamp valid 
             if (!isTimestampValid)
             {
                 Console.WriteLine($"Timestamp format invalid: {timestamp}");
                 throw new FormatException("Invalid timestamp format");
             }
 
-            // rearranged according to appendix d
+            // Continue with creating the ParsedData object
             return new ParsedData
             {
                 Timestamp = parsedTimestamp,
@@ -135,7 +143,6 @@ namespace AircraftTransmissionSystem
                 Pitch = Convert.ToDouble(parts[7].Trim()),
                 Bank = Convert.ToDouble(parts[6].Trim()),
             };
-
         }
 
         private interface DataAdapter

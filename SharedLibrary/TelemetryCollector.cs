@@ -13,9 +13,9 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using SharedLibrary;
 
-namespace GroundStationTerminal
+
+namespace SharedLibrary
 {
     public class TelemetryCollector
     {
@@ -100,28 +100,39 @@ namespace GroundStationTerminal
         public async Task ProcessClientStreamAsync(NetworkStream stream)
         {
             byte[] buffer = new byte[BUFFER_SIZE];
-            while(true)
-            {
+            StringBuilder messageBuffer = new StringBuilder();
 
+            while (true)
+            {
                 try
-                {                
-                    // read from the network stream 
+                {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                     if (bytesRead > 0)
                     {
-                        // conversion of received bytes to string 
-                        string receivedTelemetry = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        Console.WriteLine($"Received: {receivedTelemetry}");
-                        // parse the packet 
-                        // add an if condition to see if real-time mode has been enabled in main window 
-                        await ParseAndNotifyAsync(receivedTelemetry);
+                        // Convert received bytes to string
+                        string chunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        // Append to a buffer to handle partial messages if needed
+                        messageBuffer.Append(chunk);
+
+                        string fullBuffer = messageBuffer.ToString();
+                        int newlineIndex;
+                        while ((newlineIndex = fullBuffer.IndexOf('\n')) >= 0)
+                        {
+                            string fullMessage = fullBuffer.Substring(0, newlineIndex).Trim();
+                            fullBuffer = fullBuffer.Substring(newlineIndex + 1);
+
+                            // Process the complete telemetry line
+                            Console.WriteLine($"Received: {fullMessage}");
+                            await ParseAndNotifyAsync(fullMessage);
+                        }
+                        messageBuffer.Clear();
+                        messageBuffer.Append(fullBuffer);
                     }
                     else
                     {
-                        Console.WriteLine("Connection closed unexpectedly");
+                        Console.WriteLine("Client disconnected.");
                         break;
                     }
-
                 }
                 catch (Exception ex)
                 {

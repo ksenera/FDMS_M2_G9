@@ -6,14 +6,14 @@
  * Description   : Parses out raw telemetry data into a structured format class ParsedData
  */
 
-using SharedLibrary;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GroundStationTerminal
+namespace SharedLibrary
 {
     public class TelemetryParser
     {

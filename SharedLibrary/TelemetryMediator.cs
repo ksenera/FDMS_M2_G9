@@ -13,20 +13,19 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary;
 
-namespace GroundStationTerminal
+namespace SharedLibrary
 {
     public class TelemetryMediator
     {
         private TelemetryCollector telemetryCollector;
         private TelemetryParser telemetryParser;
-        private GUIInterfaceManager guiInterfaceManager;
+        //private GUIInterfaceManager guiInterfaceManager;
         private DatabaseHandler databaseHandler;
 
-        public TelemetryMediator(TelemetryCollector telemetryCollector, TelemetryParser telemetryParser, GUIInterfaceManager guiInterfaceManager, DatabaseHandler databaseHandler)
+        public TelemetryMediator(TelemetryCollector telemetryCollector, TelemetryParser telemetryParser, DatabaseHandler databaseHandler)
         {
             this.telemetryCollector = telemetryCollector;
             this.telemetryParser = telemetryParser;
-            this.guiInterfaceManager = guiInterfaceManager;
             this.databaseHandler = databaseHandler;
         }
 
@@ -55,10 +54,10 @@ namespace GroundStationTerminal
          *
          * RETURNS : void
          */
-        private void UpdateGUI(ParsedData data)
-        {// private mediator method to update the GUI 
-            guiInterfaceManager.UpdateGUI(data);
-        }
+        //private void UpdateGUI(ParsedData data)
+        //{ private mediator method to update the GUI 
+            //guiInterfaceManager.UpdateGUI(data);
+        //}
 
 
 

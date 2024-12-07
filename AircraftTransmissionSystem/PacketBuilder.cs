@@ -32,24 +32,21 @@ namespace AircraftTransmissionSystem
          *
          * RETURNS : Packet packet
          */
-        public Packet BuildPacket(ParsedData data, string aircraftTailID)
+        public Packet BuildPacket(ParsedData data, string aircraftTailId)
         {
-            Packet packet = new Packet
+            return new Packet
             {
-                // due to null reference exception in packet line 59 default assigned 
-                AircraftTailId = aircraftTailID,
+                AircraftTailId = aircraftTailId,
                 Timestamp = data.Timestamp,
-                AccelX  = data.AccelX,
+                AccelX = data.AccelX,
                 AccelY = data.AccelY,
                 AccelZ = data.AccelZ,
                 Weight = data.Weight,
-                Altitude = data.Altitude,   
+                Altitude = data.Altitude,
                 Pitch = data.Pitch,
                 Bank = data.Bank,
+                Checksum = data.Checksum 
             };
-
-            packet.Checksum = packet.CalculateChecksum();
-            return packet;
         }
 
         //public void AddHeader(string header)

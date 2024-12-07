@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-namespace GroundStationTerminal
+namespace SharedLibrary
 {
     public class DatabaseHandler
     {

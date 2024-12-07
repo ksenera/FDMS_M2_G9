@@ -50,9 +50,9 @@ namespace GroundStationTerminal
 
             TelemetryCollector telemetryCollector = new TelemetryCollector(telemetryParser);
 
-            guiInterfaceManager = new GUIInterfaceManager(this);
+            //guiInterfaceManager = new GUIInterfaceManager(this);
 
-            telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, guiInterfaceManager, databaseHandler);
+            telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, databaseHandler);
 
             telemetryData = new ObservableCollection<ParsedData>();
             TelemetryDataGrid.ItemsSource = telemetryData;
