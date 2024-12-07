@@ -106,21 +106,10 @@ namespace AircraftTransmissionSystem
 
             string timestamp = parts[0].Trim();
             DateTime parsedTimestamp;
-
-            // array of possible time stamp formats 
-            string[] allTimeStampFormats =
-            {
-                "d_M_yyyy H:mm:ss",     
-                "d_M_yyyy H:m:s",       
-                "d_M_yyyy HH:mm:ss",    
-                "dd_MM_yyyy H:mm:ss",   
-                "dd_MM_yyyy H:m:s"      
-            };
-
 #pragma warning disable S6580 // Use a format provider when parsing date and time
             bool isTimestampValid = DateTime.TryParseExact(
                 timestamp,
-                allTimeStampFormats,
+                "d_M_yyyy H:mm:ss",
                 null,
                 System.Globalization.DateTimeStyles.None,
                 out parsedTimestamp
