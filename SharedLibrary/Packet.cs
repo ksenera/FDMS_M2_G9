@@ -48,9 +48,10 @@ namespace SharedLibrary
          */
         public double CalculateChecksum()
         {
-            Checksum = (Altitude + Pitch + Bank) / 3;
-            return Checksum; // also return, a getter function
+            double checksum = (Altitude + Pitch + Bank) / 3;
+            return Math.Round(checksum, MidpointRounding.ToZero);
         }
+
 
         /*
          * FUNCTION : VerifyChecksum()

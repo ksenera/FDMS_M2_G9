@@ -47,8 +47,7 @@ namespace GroundStationTerminal
             {
                 try
                 {
-                    client = new TcpClient();
-                    await listener.AcceptTcpClientAsync();
+                    client = await listener.AcceptTcpClientAsync();
                     isConnected = true;
                     Console.WriteLine("Connected to Aircraft Transmission System");
 

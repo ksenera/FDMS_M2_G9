@@ -76,7 +76,7 @@ namespace GroundStationTerminal
             {
                 try
                 {
-                    observer.Update(data);
+                    observer.UpdateGUI(data);
                 }
                 catch (Exception ex)
                 {

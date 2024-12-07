@@ -16,6 +16,6 @@ namespace SharedLibrary
 {
     public interface IObserver
     {
-        void Update(ParsedData data);
+        void UpdateGUI(ParsedData data);
     }
 }

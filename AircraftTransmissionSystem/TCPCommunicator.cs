@@ -115,7 +115,7 @@ namespace AircraftTransmissionSystem
                 {
                     Console.WriteLine("Packet checksum invalid, packet being skipped...");
                     throw new InvalidOperationException("Invalid checksum, packet skipped");
-                    //continue;
+                    continue;
                 }
 
                 // finally send the data using Async method below 

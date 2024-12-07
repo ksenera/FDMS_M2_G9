@@ -40,6 +40,9 @@ namespace GroundStationTerminal
         {
             InitializeComponent();
             // add the connection string from remote db here not sure if azure or not 
+            this.Activate();
+            this.Left = 100;
+            this.Top = 100;
 
             databaseHandler = new DatabaseHandler(); // make sure to add the connection string here
 

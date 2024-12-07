@@ -37,7 +37,7 @@ namespace GroundStationTerminal
          *
          * RETURNS : void
          */
-        public void Update(ParsedData data)
+        public void UpdateGUI(ParsedData data)
         {
             telemetryDataCollected.Add(data);
             mainWindow.Dispatcher.Invoke(() =>
