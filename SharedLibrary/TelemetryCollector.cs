@@ -97,7 +97,7 @@ namespace SharedLibrary
          */
         // deleted the receive and parse packet because i changed the tcplistener to async listen 
         // new method to handle data async from network stream 
-        public async Task ProcessClientStreamAsync(NetworkStream stream)
+        public async Task ProcessClientStreamAsync(Stream stream)
         {
             byte[] buffer = new byte[BUFFER_SIZE];
             StringBuilder messageBuffer = new StringBuilder();
