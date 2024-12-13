@@ -25,7 +25,7 @@ namespace AircraftTransmissionSystem
 
             // temporarily using a harded coded file path for testing 
             // will update config file to make sure we can select the file being sent after
-            string telemetryDataFilePath = "C:\\Users\\shivm\\Desktop\\C-FGAX.txt";
+            string telemetryDataFilePath = "C:\\Users\\andre\\OneDrive\\Downloads\\C-FGAX.txt";
 
             TCPCommunicator tcpCommunicator = new TCPCommunicator(telemetryDataFilePath);
 
