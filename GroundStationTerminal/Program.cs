@@ -17,21 +17,6 @@ namespace GroundStationTerminal
 {
     internal class Program
     {
-        static async Task Main(string[] args)
-        {
-            int port = 8080;
 
-
-            TelemetryParser telemetryParser = new TelemetryParser();
-            TelemetryCollector telemetryCollector = new TelemetryCollector(telemetryParser);            
-            TCPListener listener = new TCPListener(port, telemetryCollector);
-
-            // start the listener here 
-            Console.WriteLine("Listening for incoming aircraft transmissions...");
-
-            await listener.StartListeningAsync();
-
-            Console.WriteLine("Listener stopped");
-        }
     }
 }

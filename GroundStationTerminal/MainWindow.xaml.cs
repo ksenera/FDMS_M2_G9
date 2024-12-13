@@ -9,6 +9,7 @@
 using Microsoft.Identity.Client.TelemetryCore.TelemetryClient;
 using SharedLibrary;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +35,9 @@ namespace GroundStationTerminal
         private DatabaseHandler databaseHandler;
         private TelemetryCollector telemetryCollector;
         private TelemetryParser telemetryParser;
-        private ObservableCollection<ParsedData> telemetryData;
+
+        internal ObservableCollection<ParsedData> telemetryData;
+        private bool IsRealTimeModeEnabled = true;
 
         public MainWindow()
         {
@@ -46,18 +49,57 @@ namespace GroundStationTerminal
 
             databaseHandler = new DatabaseHandler(); // make sure to add the connection string here
 
-            TelemetryParser telemetryParser = new TelemetryParser();
+            telemetryParser = new TelemetryParser();
+            
+            telemetryCollector = new TelemetryCollector(telemetryParser);
 
-            TelemetryCollector telemetryCollector = new TelemetryCollector(telemetryParser);
+            
 
-            //guiInterfaceManager = new GUIInterfaceManager(this);
+            guiInterfaceManager = new GUIInterfaceManager(this);
 
-            telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, databaseHandler);
+            telemetryMediator = new TelemetryMediator(telemetryCollector, telemetryParser, databaseHandler, guiInterfaceManager)
+            {
+                IsRealTimeModeEnabled = IsRealTimeModeEnabled
+            };
 
             telemetryData = new ObservableCollection<ParsedData>();
             TelemetryDataGrid.ItemsSource = telemetryData;
 
+            StatusLabel.Content = "Status: Disconnected";
+            int port = 8080;
+
+            listener = new TCPListener(port, telemetryCollector);
+            listener.ConnectionStatusChanged += OnConnectionStatusChanged;
+
+            StartTelemetryListener();
+
+            
+
         }
+
+        private void OnConnectionStatusChanged(bool isConnected)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                StatusLabel.Content = isConnected ? "Status: Connected" : "Status: Disconnected";
+            });
+        }
+
+        private async void StartTelemetryListener()
+        {
+            await listener.StartListeningAsync();
+        }
+
+     
+        private void Listener_ClientConnected(object sender, EventArgs e)
+        {
+
+            Dispatcher.Invoke(() =>
+            {
+                StatusLabel.Content = "Status: Connected";
+            });
+        }
+
 
         /*
          * FUNCTION : UpdateTelemetryData()
@@ -68,12 +110,11 @@ namespace GroundStationTerminal
          *
          * RETURNS : none
          */
-        internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)
-        {
-            telemetryData = telemetryDataCollected;
-            TelemetryDataGrid.ItemsSource = telemetryData;
-            //throw new NotImplementedException();
-        }
+        //internal void UpdateTelemetryData(ObservableCollection<ParsedData> telemetryDataCollected)
+        //{
+        //    telemetryData = telemetryDataCollected;
+        //    TelemetryDataGrid.ItemsSource = telemetryData;
+        //}
 
         /*
          * FUNCTION : ToggleRealTimeButton_Click()
@@ -86,7 +127,10 @@ namespace GroundStationTerminal
          */
         private void ToggleRealTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            IsRealTimeModeEnabled = !IsRealTimeModeEnabled;
+            telemetryMediator.IsRealTimeModeEnabled = IsRealTimeModeEnabled;
+
+            ToggleRealTimeButton.Content = IsRealTimeModeEnabled ? "Disable Real-Time" : "Enable Real-Time";
         }
 
         /*
@@ -100,7 +144,19 @@ namespace GroundStationTerminal
          */
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            if (!IsRealTimeModeEnabled)
+            {
+                var results = databaseHandler.SearchTelemetryData("C-FGAX");
+                telemetryData.Clear();
+                foreach (var r in results)
+                {
+                    telemetryData.Add((ParsedData)r);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Disable Real-Time mode before searching.");
+            }
         }
     }
 }

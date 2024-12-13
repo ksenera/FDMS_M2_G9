@@ -11,22 +11,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharedLibrary;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace SharedLibrary
 {
     public class TelemetryMediator
-    {
+    {       
         private TelemetryCollector telemetryCollector;
         private TelemetryParser telemetryParser;
-        //private GUIInterfaceManager guiInterfaceManager;
+        private IGUIUpdater guiUpdater;
         private DatabaseHandler databaseHandler;
+        public bool IsRealTimeModeEnabled { get; set; } = true;
 
-        public TelemetryMediator(TelemetryCollector telemetryCollector, TelemetryParser telemetryParser, DatabaseHandler databaseHandler)
+        public TelemetryMediator(TelemetryCollector telemetryCollector, TelemetryParser telemetryParser, DatabaseHandler databaseHandler, IGUIUpdater guiUpdater)
         {
             this.telemetryCollector = telemetryCollector;
             this.telemetryParser = telemetryParser;
+            this.guiUpdater = guiUpdater;
             this.databaseHandler = databaseHandler;
+
+            this.telemetryCollector.AddObserver(new MediatorObserver(this));
         }
 
 
@@ -39,9 +44,13 @@ namespace SharedLibrary
          *
          * RETURNS : void
          */
-        public void ReceiveTelemetryData(string rawData)
+        public void ReceiveTelemetryData(ParsedData data)
         {// method to call when new telemetry data is received from the collector 
-
+            databaseHandler.StoreData(data);
+            if (IsRealTimeModeEnabled)
+            {
+                guiUpdater.UpdateGUI(data);
+            }
 
         }
 
@@ -80,5 +89,18 @@ namespace SharedLibrary
             databaseHandler.StoreData(data);
         }
 
+        private class MediatorObserver : IObserver
+        {
+            private TelemetryMediator mediator;
+            public MediatorObserver(TelemetryMediator mediator)
+            {
+                this.mediator = mediator;
+            }
+
+            public void UpdateGUI(ParsedData data)
+            {
+                mediator.ReceiveTelemetryData(data);
+            }
+        }
     }
 }

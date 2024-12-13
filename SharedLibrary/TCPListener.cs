@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SharedLibrary
 {
@@ -18,6 +20,8 @@ namespace SharedLibrary
         private TelemetryCollector telemetryCollector;
 
         private const int BUFFER_SIZE = 1024;
+
+        public event Action<bool> ConnectionStatusChanged;
 
         // constructor for port and initialize new tcp listening to any ip add 
         public TCPListener(int port, TelemetryCollector telemetryCollector)
@@ -48,26 +52,26 @@ namespace SharedLibrary
                 try
                 {
                     client = await listener.AcceptTcpClientAsync();
-                    isConnected = true;
-                    Console.WriteLine("Connected to Aircraft Transmission System");
+                    Console.WriteLine("Connected");
 
+                    ConnectionStatusChanged?.Invoke(true);
 
                     NetworkStream stream = client.GetStream();
                     await telemetryCollector.ProcessClientStreamAsync(stream);
 
+                    client.Close();
+                    Console.WriteLine("Disconnected");
+
+                    ConnectionStatusChanged?.Invoke(false);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                 }
-                finally
-                {
-                    isConnected = false;
-                    client?.Close();
-                    Console.WriteLine("Aircraft transmission no longer connected");
-                }
             }
         }
+
+
 
         /*
          * FUNCTION : HandleClientAsync()

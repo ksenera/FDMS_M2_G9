@@ -153,5 +153,10 @@ namespace SharedLibrary
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<object> SearchTelemetryData(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

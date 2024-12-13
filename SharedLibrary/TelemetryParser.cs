@@ -35,8 +35,6 @@ namespace SharedLibrary
          */
         public ParsedData ParseData(string data)
         {
-
-            // if the data is not in the correct format, throw ArgumentException
             if (string.IsNullOrEmpty(data))
             {
                 throw new ArgumentNullException("data cannot be null or empty.");
@@ -53,7 +51,29 @@ namespace SharedLibrary
             // body has data/time accelx,y,z weight altitude pitch bank
             string[] packetBody = entirePacket[1].Split(',');
 
-            DateTime timestamp = DateTime.Parse(packetBody[0]);
+            packetBody = packetBody.Select(x => x.Trim())
+                       .Where(x => !string.IsNullOrEmpty(x))
+                       .ToArray();
+
+            string timestampString = packetBody[0].Trim();
+
+            string[] possibleFormats = {
+                "d_M_yyyy H:mm:ss",
+                "d_M_yyyy H:m:s",
+                "d_M_yyyy HH:mm:ss",
+                "dd_MM_yyyy H:mm:ss",
+                "dd_MM_yyyy H:m:s"      
+            };
+
+            if (!DateTime.TryParseExact(timestampString, possibleFormats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None,
+                out DateTime timestamp))
+            {
+                Console.WriteLine($"Timestamp format invalid: {timestampString}");
+                throw new FormatException("Invalid timestamp format");
+            }
+
             double accelX = double.Parse(packetBody[1]);
             double accelY = double.Parse(packetBody[2]);
             double accelZ = double.Parse(packetBody[3]);
@@ -62,13 +82,12 @@ namespace SharedLibrary
             double pitch = double.Parse(packetBody[6]);
             double bank = double.Parse(packetBody[7]);
 
-            // packet trailer is the checksum 
+            // packet trailer is the checksum
             if (!int.TryParse(entirePacket[2], out int checksum))
             {
                 throw new ArgumentException("Invalid checksum.");
             }
-            
-            // should follow the format as per SharedLibrary.ParsedData
+
             return new ParsedData
             {
                 AircraftID = aircraftTailID,
@@ -83,6 +102,7 @@ namespace SharedLibrary
                 Checksum = checksum
             };
         }
+
 
 
         /*

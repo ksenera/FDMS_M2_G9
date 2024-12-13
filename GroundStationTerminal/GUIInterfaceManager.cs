@@ -16,16 +16,18 @@ using SharedLibrary;
 
 namespace GroundStationTerminal
 {
-    public class GUIInterfaceManager : IObserver
+    public class GUIInterfaceManager : IGUIUpdater
     {
-        private ObservableCollection<ParsedData> telemetryDataCollected;
+        //private ObservableCollection<ParsedData> telemetryDataCollected;
 
         private MainWindow mainWindow;
+        private bool firstPacketReceived = false;
+
 
         public GUIInterfaceManager(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
-            telemetryDataCollected = new ObservableCollection<ParsedData>();
+            //telemetryDataCollected = new ObservableCollection<ParsedData>();
         }
 
         /*
@@ -39,12 +41,12 @@ namespace GroundStationTerminal
          */
         public void UpdateGUI(ParsedData data)
         {
-            telemetryDataCollected.Add(data);
             mainWindow.Dispatcher.Invoke(() =>
             {
-                mainWindow.UpdateTelemetryData(telemetryDataCollected);
+                mainWindow.telemetryData.Add(data);
             });
         }
+ 
 
         // update the GUI with the latest telemetry data
         //public void UpdateGUI(ParsedData data)

@@ -123,6 +123,10 @@ namespace AircraftTransmissionSystem
                 // Delay for 1 second to simulate reading one line at a time
                 await Task.Delay(1000);
             }
+            fileReceive.Close();
+            client.Close();
+            isConnected = false;
+
         }
 
         /*
@@ -152,6 +156,10 @@ namespace AircraftTransmissionSystem
 
                 byte[] packetData = packet.CreateByteArray();
                 await fileReceive.WriteAsync(packetData, 0, packetData.Length);
+
+                // newline so gst knows when packet ends 
+                byte[] newline = Encoding.UTF8.GetBytes("\n");
+                await fileReceive.WriteAsync(newline, 0, newline.Length);
                 await fileReceive.FlushAsync();
 
                 Console.WriteLine($"Successfully sent packet of {packetData.Length} bytes");

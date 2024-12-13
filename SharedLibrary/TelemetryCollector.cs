@@ -104,43 +104,42 @@ namespace SharedLibrary
 
             while (true)
             {
+                int bytesRead;
                 try
                 {
-                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                    if (bytesRead > 0)
-                    {
-                        // Convert received bytes to string
-                        string chunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                        // Append to a buffer to handle partial messages if needed
-                        messageBuffer.Append(chunk);
-
-                        string fullBuffer = messageBuffer.ToString();
-                        int newlineIndex;
-                        while ((newlineIndex = fullBuffer.IndexOf('\n')) >= 0)
-                        {
-                            string fullMessage = fullBuffer.Substring(0, newlineIndex).Trim();
-                            fullBuffer = fullBuffer.Substring(newlineIndex + 1);
-
-                            // Process the complete telemetry line
-                            Console.WriteLine($"Received: {fullMessage}");
-                            await ParseAndNotifyAsync(fullMessage);
-                        }
-                        messageBuffer.Clear();
-                        messageBuffer.Append(fullBuffer);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Client disconnected.");
-                        break;
-                    }
+                    bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Data wasn't received: {ex.Message}");
-                    break;
+                    return;
+                }
+
+                if (bytesRead == 0)
+                {
+                    // The client closed the connection gracefully
+                    Console.WriteLine("Client disconnected.");
+                    return; 
+                }
+
+  
+                string chunk = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                messageBuffer.Append(chunk);
+
+                int newlineIndex;
+                while ((newlineIndex = messageBuffer.ToString().IndexOf('\n')) >= 0)
+                {
+                    string fullMessage = messageBuffer.ToString().Substring(0, newlineIndex).Trim();
+                    messageBuffer.Remove(0, newlineIndex + 1);
+
+                    if (!string.IsNullOrEmpty(fullMessage))
+                    {
+                        await ParseAndNotifyAsync(fullMessage);
+                    }
                 }
             }
         }
+
 
 
         /*
